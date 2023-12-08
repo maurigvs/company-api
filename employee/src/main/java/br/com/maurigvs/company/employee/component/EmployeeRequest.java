@@ -13,5 +13,4 @@ public class EmployeeRequest implements Serializable {
     private String sobrenome;
     private String email;
     private String dataDeNascimento;
-
 }

@@ -24,5 +24,4 @@ public class Employee {
     private String surname;
     private String emailAddress;
     private LocalDate birthDate;
-
 }
