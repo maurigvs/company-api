@@ -1,6 +1,6 @@
 server:
   servlet:
-    context-path: /employee
+    context-path: /company
 spring:
   datasource:
     url: jdbc:h2:mem:employee-db
