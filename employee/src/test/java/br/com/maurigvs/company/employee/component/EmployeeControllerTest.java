@@ -47,8 +47,8 @@ class EmployeeControllerTest {
 
         // then
         verify(employeeService, times(1)).create(
-                "Mauri Celio", "Goncalves Junior",
-                "maurigvs@icloud.com", "04/06/1987");
+                "John", "Wayne",
+                "john@wayne.com", "25/08/1963");
         verifyNoMoreInteractions(employeeService);
     }
 
@@ -58,8 +58,8 @@ class EmployeeControllerTest {
         var messageExpected = "The birth date must be in the format: dd/MM/yyyy";
 
         var requestAsJson = parseToJson(new EmployeeRequest(
-                "Mauri Celio","Goncalves Junior",
-                "maurigvs@icloud.com", "4/6/87"));
+                "John","Wayne",
+                "john@wayne.com", "4/6/87"));
 
         var responseAsJson = parseToJson(new MessageResponse(
                 HttpStatus.BAD_REQUEST.getReasonPhrase(), messageExpected));
@@ -84,8 +84,8 @@ class EmployeeControllerTest {
 
     private EmployeeRequest mockRequest() {
         return new EmployeeRequest(
-                "Mauri Celio", "Goncalves Junior",
-                "maurigvs@icloud.com", "04/06/1987");
+                "John", "Wayne",
+                "john@wayne.com", "25/08/1963");
     }
 
     public static String parseToJson(Object object) {
