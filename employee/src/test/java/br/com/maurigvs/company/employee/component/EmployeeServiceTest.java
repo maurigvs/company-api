@@ -28,11 +28,12 @@ class EmployeeServiceTest {
     @Test
     void should_ReturnEmployee_when_Save() throws BusinessException {
         // given
-        given(employeeRepository.save(any(Employee.class))).willReturn(mockEmployee());
+        var employee = new Employee(1L, "John", "Wayne",
+                "john@wayne.com", LocalDate.of(1987,6,4));
+        given(employeeRepository.save(any(Employee.class))).willReturn(employee);
 
         // when
-        Employee result = employeeService.create(
-                "John", "Wayne",
+        var result = employeeService.create("John", "Wayne",
                 "john@wayne.com", "25/08/1963");
 
         // then
@@ -48,8 +49,7 @@ class EmployeeServiceTest {
     @Test
     void should_ThrowBusinessException_when_BirthDateHasInvalidFormatt(){
         assertThatExceptionOfType(BusinessException.class)
-                .isThrownBy(() -> employeeService.create(
-                        "John", "Wayne",
+                .isThrownBy(() -> employeeService.create("John", "Wayne",
                         "john@wayne.com", "4/6/87"))
                 .withMessage("The birth date must be in the format: dd/MM/yyyy");
     }
@@ -62,17 +62,8 @@ class EmployeeServiceTest {
 
         // when... then
         assertThatExceptionOfType(BusinessException.class)
-                .isThrownBy(() -> employeeService.create(
-                        "John", "Wayne",
+                .isThrownBy(() -> employeeService.create("John", "Wayne",
                         "john@wayne.com", birthDate))
                 .withMessage("The employee must have more than 18 years of age");
-    }
-
-    private Employee mockEmployee() {
-        return new Employee(1L,
-                "John",
-                "Wayne",
-                "john@wayne.com",
-                LocalDate.of(1987,6,4));
     }
 }

@@ -37,7 +37,9 @@ class EmployeeControllerTest {
     @Test
     void should_ReturnCreated_when_PostEmployee() throws Exception {
         // given
-        var requestAsJson = parseToJson(mockRequest());
+        var request = new EmployeeRequest("John", "Wayne",
+                "john@wayne.com", "25/08/1963");
+        var requestAsJson = jsonStringOf(request);
 
         // when
         mockMvc.perform(post("/employee")
@@ -57,11 +59,11 @@ class EmployeeControllerTest {
         // given
         var messageExpected = "The birth date must be in the format: dd/MM/yyyy";
 
-        var requestAsJson = parseToJson(new EmployeeRequest(
+        var requestAsJson = jsonStringOf(new EmployeeRequest(
                 "John","Wayne",
                 "john@wayne.com", "4/6/87"));
 
-        var responseAsJson = parseToJson(new MessageResponse(
+        var responseAsJson = jsonStringOf(new MessageResponse(
                 HttpStatus.BAD_REQUEST.getReasonPhrase(), messageExpected));
 
         given(employeeService.create(any(), any(), any(), any())).willThrow(
@@ -82,13 +84,7 @@ class EmployeeControllerTest {
         assertThat(response.getMessage()).isEqualTo(messageExpected);
     }
 
-    private EmployeeRequest mockRequest() {
-        return new EmployeeRequest(
-                "John", "Wayne",
-                "john@wayne.com", "25/08/1963");
-    }
-
-    public static String parseToJson(Object object) {
+    public static String jsonStringOf(Object object) {
         try {
             var om = new ObjectMapper();
             om.registerModule(new JavaTimeModule());
