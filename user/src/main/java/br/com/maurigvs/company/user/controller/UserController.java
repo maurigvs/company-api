@@ -1,6 +1,8 @@
-package br.com.maurigvs.company.user.component;
+package br.com.maurigvs.company.user.controller;
 
+import br.com.maurigvs.company.user.service.UserService;
 import br.com.maurigvs.company.user.exception.BusinessException;
+import br.com.maurigvs.company.user.model.UserDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,7 +20,7 @@ public class UserController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public void postEmployee(@RequestBody UserRequest request) throws BusinessException {
+    public void postEmployee(@RequestBody UserDto request) throws BusinessException {
         userService.create(request.getLogin());
     }
 }

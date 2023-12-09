@@ -1,5 +1,6 @@
-package br.com.maurigvs.company.user.component;
+package br.com.maurigvs.company.user.repository;
 
+import br.com.maurigvs.company.user.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

@@ -1,7 +1,10 @@
-package br.com.maurigvs.company.user.component;
+package br.com.maurigvs.company.user.controller;
 
+import br.com.maurigvs.company.user.controller.UserController;
 import br.com.maurigvs.company.user.exception.BusinessException;
-import br.com.maurigvs.company.user.exception.MessageResponse;
+import br.com.maurigvs.company.user.exception.ErrorMessageDto;
+import br.com.maurigvs.company.user.model.UserDto;
+import br.com.maurigvs.company.user.service.UserService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -36,7 +39,7 @@ class UserControllerTest {
     @Test
     void should_ReturnCreated_when_PostUser() throws Exception {
         // given
-        var requestAsJson = jsonStringOf(new UserRequest("john@wayne.com"));
+        var requestAsJson = jsonStringOf(new UserDto("john@wayne.com"));
 
         // when
         mockMvc.perform(
@@ -56,10 +59,10 @@ class UserControllerTest {
         var messageExpected = "The user is already registered";
 
         var requestAsJson = jsonStringOf(
-            new UserRequest("john@wayne.com"));
+            new UserDto("john@wayne.com"));
 
         var responseAsJson = jsonStringOf(
-            new MessageResponse(HttpStatus.BAD_REQUEST.getReasonPhrase(), messageExpected));
+            new ErrorMessageDto(HttpStatus.BAD_REQUEST.getReasonPhrase(), messageExpected));
 
         given(userService.create(anyString()))
             .willThrow(new BusinessException(messageExpected));

@@ -1,4 +1,4 @@
-package br.com.maurigvs.company.user.component;
+package br.com.maurigvs.company.user.exception;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,7 +9,8 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
-public class UserRequest implements Serializable {
+public class ErrorMessageDto implements Serializable {
 
-    private String login;
+    private String error;
+    private String message;
 }
