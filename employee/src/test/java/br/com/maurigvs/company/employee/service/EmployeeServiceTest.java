@@ -1,6 +1,9 @@
-package br.com.maurigvs.company.employee.component;
+package br.com.maurigvs.company.employee.service;
 
 import br.com.maurigvs.company.employee.exception.BusinessException;
+import br.com.maurigvs.company.employee.model.Employee;
+import br.com.maurigvs.company.employee.repository.EmployeeRepository;
+import br.com.maurigvs.company.employee.service.EmployeeService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

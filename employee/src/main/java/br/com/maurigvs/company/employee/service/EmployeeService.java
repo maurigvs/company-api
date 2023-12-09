@@ -1,6 +1,8 @@
-package br.com.maurigvs.company.employee.component;
+package br.com.maurigvs.company.employee.service;
 
 import br.com.maurigvs.company.employee.exception.BusinessException;
+import br.com.maurigvs.company.employee.model.Employee;
+import br.com.maurigvs.company.employee.repository.EmployeeRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -12,7 +14,7 @@ import java.time.format.DateTimeFormatter;
 @RequiredArgsConstructor
 public class EmployeeService {
 
-    private final EmployeeRepository employeeRepository;
+    private final EmployeeRepository repository;
 
     public Employee create(String name, String surname, String emailAddress, String birthDate, String taxId)
             throws BusinessException {
@@ -33,11 +35,11 @@ public class EmployeeService {
     }
 
     private Employee save(Employee employee) {
-        return employeeRepository.save(employee);
+        return repository.save(employee);
     }
 
     private boolean employeeAlreadyExists(String taxId) {
-        return employeeRepository.existsByTaxId(taxId);
+        return repository.existsByTaxId(taxId);
     }
 
     private static LocalDate localDateOf(String birthDate) throws BusinessException {

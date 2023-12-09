@@ -1,4 +1,4 @@
-package br.com.maurigvs.company.employee.component;
+package br.com.maurigvs.company.employee.model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
