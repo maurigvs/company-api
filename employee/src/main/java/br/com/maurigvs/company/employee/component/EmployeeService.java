@@ -14,22 +14,33 @@ public class EmployeeService {
 
     private final EmployeeRepository employeeRepository;
 
-    public Employee create(String name, String surname, String emailAddress, String birthDate)
+    public Employee create(String name, String surname, String emailAddress, String birthDate, String taxId)
             throws BusinessException {
 
-        LocalDate birthLocalDate = parseStringDate(birthDate);
+        LocalDate birthLocalDate = localDateOf(birthDate);
 
-        if(birthLocalDate.isAfter(LocalDate.now().minusYears(18)))
+        if(isEmployeeUnderage(birthLocalDate))
             throw new BusinessException("The employee must have more than 18 years of age");
 
-        return save(new Employee(null, name, surname, emailAddress, birthLocalDate));
+        if(employeeAlreadyExists(taxId))
+            throw new BusinessException("The employee already exists");
+
+        return save(new Employee(null, name, surname, emailAddress, birthLocalDate, taxId));
+    }
+
+    private boolean isEmployeeUnderage(LocalDate birthDate) {
+        return birthDate.isAfter(LocalDate.now().minusYears(18));
     }
 
     private Employee save(Employee employee) {
         return employeeRepository.save(employee);
     }
 
-    private static LocalDate parseStringDate(String birthDate) throws BusinessException {
+    private boolean employeeAlreadyExists(String taxId) {
+        return employeeRepository.existsByTaxId(taxId);
+    }
+
+    private static LocalDate localDateOf(String birthDate) throws BusinessException {
         var dateFormat = "dd/MM/yyyy";
         try{
             return LocalDate.from(DateTimeFormatter.ofPattern(dateFormat).parse(birthDate));

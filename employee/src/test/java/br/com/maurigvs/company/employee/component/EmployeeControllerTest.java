@@ -15,7 +15,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -37,20 +37,27 @@ class EmployeeControllerTest {
     @Test
     void should_ReturnCreated_when_PostEmployee() throws Exception {
         // given
-        var request = new EmployeeRequest("John", "Wayne",
-                "john@wayne.com", "25/08/1963");
+        var request = new EmployeeRequest(
+            "John",
+            "Wayne",
+            "john@wayne.com",
+            "25/08/1963",
+            "40360193099");
         var requestAsJson = jsonStringOf(request);
 
         // when
-        mockMvc.perform(post("/employee")
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(requestAsJson))
-                .andExpect(status().isCreated());
+        mockMvc.perform(
+            post("/employee")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(requestAsJson))
+            .andExpect(status().isCreated());
 
         // then
-        verify(employeeService, times(1)).create(
-                "John", "Wayne",
-                "john@wayne.com", "25/08/1963");
+        verify(employeeService, times(1))
+            .create("John", "Wayne",
+                "john@wayne.com",
+                "25/08/1963",
+                "40360193099");
         verifyNoMoreInteractions(employeeService);
     }
 
@@ -60,25 +67,29 @@ class EmployeeControllerTest {
         var messageExpected = "The birth date must be in the format: dd/MM/yyyy";
 
         var requestAsJson = jsonStringOf(new EmployeeRequest(
-                "John","Wayne",
-                "john@wayne.com", "4/6/87"));
+            "John",
+            "Wayne",
+            "john@wayne.com",
+            "4/6/87",
+            "40360193099"));
 
         var responseAsJson = jsonStringOf(new MessageResponse(
-                HttpStatus.BAD_REQUEST.getReasonPhrase(), messageExpected));
+            HttpStatus.BAD_REQUEST.getReasonPhrase(), messageExpected));
 
-        given(employeeService.create(any(), any(), any(), any())).willThrow(
-                new BusinessException(messageExpected));
+        given(employeeService.create(anyString(), anyString(), anyString(), anyString(),
+            anyString())).willThrow(new BusinessException(messageExpected));
 
         // when... then
-        var resultActions = mockMvc.perform(post("/employee")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(requestAsJson))
-                .andExpect(status().isBadRequest())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(content().json(responseAsJson));
+        var resultActions = mockMvc.perform(
+            post("/employee")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(requestAsJson))
+            .andExpect(status().isBadRequest())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+            .andExpect(content().json(responseAsJson));
 
-        MessageResponse response = parseToObject(
-                resultActions.andReturn().getResponse().getContentAsString());
+        var response = parseToObject(resultActions
+            .andReturn().getResponse().getContentAsString());
 
         assertThat(response.getError()).isEqualTo(HttpStatus.BAD_REQUEST.getReasonPhrase());
         assertThat(response.getMessage()).isEqualTo(messageExpected);

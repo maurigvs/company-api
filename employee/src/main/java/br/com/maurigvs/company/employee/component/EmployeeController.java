@@ -19,7 +19,7 @@ public class EmployeeController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public void postEmployee(@RequestBody EmployeeRequest request) throws BusinessException {
-        employeeService.create(request.getNome(), request.getSobrenome(),
-                request.getEmail(), request.getDataDeNascimento());
+        employeeService.create(request.getNome(), request.getSobrenome(), request.getEmail(),
+                request.getDataDeNascimento(), request.getNumeroCpf());
     }
 }
