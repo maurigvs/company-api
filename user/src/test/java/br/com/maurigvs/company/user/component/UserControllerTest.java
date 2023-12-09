@@ -2,9 +2,6 @@ package br.com.maurigvs.company.user.component;
 
 import br.com.maurigvs.company.user.exception.BusinessException;
 import br.com.maurigvs.company.user.exception.MessageResponse;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -14,6 +11,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
+import static br.com.maurigvs.company.user.utils.Utils.jsonStringOf;
+import static br.com.maurigvs.company.user.utils.Utils.messageResponseOf;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
@@ -80,27 +79,5 @@ class UserControllerTest {
 
         assertThat(response.getError()).isEqualTo(HttpStatus.BAD_REQUEST.getReasonPhrase());
         assertThat(response.getMessage()).isEqualTo(messageExpected);
-    }
-
-    public static String jsonStringOf(Object object) {
-        try {
-            var om = new ObjectMapper();
-            om.registerModule(new JavaTimeModule());
-            return om.writeValueAsString(object);
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    public static MessageResponse messageResponseOf(String response){
-        try {
-            var om = new ObjectMapper();
-            om.registerModule(new JavaTimeModule());
-            var errorMessage = om.readValue(response, MessageResponse.class);
-            System.out.println(errorMessage);
-            return errorMessage;
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
-        }
     }
 }

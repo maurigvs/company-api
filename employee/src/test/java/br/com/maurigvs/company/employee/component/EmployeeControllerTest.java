@@ -2,9 +2,6 @@ package br.com.maurigvs.company.employee.component;
 
 import br.com.maurigvs.company.employee.exception.BusinessException;
 import br.com.maurigvs.company.employee.exception.MessageResponse;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -14,6 +11,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
+import static br.com.maurigvs.company.employee.utils.Utils.jsonStringOf;
+import static br.com.maurigvs.company.employee.utils.Utils.messageResponseOf;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
@@ -79,7 +78,7 @@ class EmployeeControllerTest {
         given(employeeService.create(anyString(), anyString(), anyString(), anyString(),
             anyString())).willThrow(new BusinessException(messageExpected));
 
-        // when... then
+        // when, then
         var resultActions = mockMvc.perform(
             post("/employee")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -88,32 +87,10 @@ class EmployeeControllerTest {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON))
             .andExpect(content().json(responseAsJson));
 
-        var response = parseToObject(resultActions
+        var response = messageResponseOf(resultActions
             .andReturn().getResponse().getContentAsString());
 
         assertThat(response.getError()).isEqualTo(HttpStatus.BAD_REQUEST.getReasonPhrase());
         assertThat(response.getMessage()).isEqualTo(messageExpected);
-    }
-
-    public static String jsonStringOf(Object object) {
-        try {
-            var om = new ObjectMapper();
-            om.registerModule(new JavaTimeModule());
-            return om.writeValueAsString(object);
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    public static MessageResponse parseToObject(String response){
-        try {
-            var om = new ObjectMapper();
-            om.registerModule(new JavaTimeModule());
-            var errorMessage = om.readValue(response, MessageResponse.class);
-            System.out.println(errorMessage);
-            return errorMessage;
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
-        }
     }
 }
