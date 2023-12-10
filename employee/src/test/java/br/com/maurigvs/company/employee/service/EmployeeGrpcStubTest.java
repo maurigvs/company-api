@@ -44,6 +44,7 @@ class EmployeeGrpcStubTest {
             @Override
             public void onNext(ExistsResponse existsResponse) {
                 assertThat(existsResponse.getExists()).isFalse();
+                assertThat(existsResponse.getEmployee()).isEqualTo(EmployeeData.getDefaultInstance());
             }
 
             @Override
