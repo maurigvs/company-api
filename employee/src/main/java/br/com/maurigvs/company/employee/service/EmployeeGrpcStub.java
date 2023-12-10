@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class EmployeeRpcService extends EmployeeGrpc.EmployeeImplBase {
+public class EmployeeGrpcStub extends EmployeeGrpc.EmployeeImplBase {
 
     private final EmployeeRepository repository;
 

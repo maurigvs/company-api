@@ -10,10 +10,12 @@ import org.springframework.stereotype.Repository;
 @RequiredArgsConstructor
 public class EmployeeRepository {
 
-    private final EmployeeGrpc.EmployeeBlockingStub employeeBlockingStub;
+    private final EmployeeGrpc.EmployeeBlockingStub repository;
 
     public ExistsResponse existsByEmailAddress(String emailAddress){
-        return employeeBlockingStub.existsByEmailAddress(
-                ExistsRequest.newBuilder().setEmailAddress(emailAddress).build());
+        return repository.existsByEmailAddress(
+                ExistsRequest.newBuilder()
+                    .setEmailAddress(emailAddress)
+                    .build());
     }
 }

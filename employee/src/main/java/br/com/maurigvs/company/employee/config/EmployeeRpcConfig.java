@@ -1,7 +1,7 @@
 package br.com.maurigvs.company.employee.config;
 
 import br.com.maurigvs.company.employee.repository.EmployeeRepository;
-import br.com.maurigvs.company.employee.service.EmployeeRpcService;
+import br.com.maurigvs.company.employee.service.EmployeeGrpcStub;
 import io.grpc.Server;
 import io.grpc.ServerBuilder;
 import org.springframework.context.annotation.Bean;
@@ -14,7 +14,7 @@ public class EmployeeRpcConfig {
     public Server serverBuilder(EmployeeRepository repository){
         return ServerBuilder.forPort(8185)
                 .directExecutor()
-                .addService(new EmployeeRpcService(repository))
+                .addService(new EmployeeGrpcStub(repository))
                 .build();
     }
 }

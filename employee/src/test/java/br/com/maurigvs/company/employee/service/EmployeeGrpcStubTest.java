@@ -21,11 +21,11 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 
-@SpringBootTest(classes = {EmployeeRpcService.class})
-class EmployeeRpcServiceTest {
+@SpringBootTest(classes = {EmployeeGrpcStub.class})
+class EmployeeGrpcStubTest {
 
     @Autowired
-    EmployeeRpcService employeeRpcService;
+    EmployeeGrpcStub employeeGrpcStub;
 
     @MockBean
     EmployeeRepository employeeRepository;
@@ -39,7 +39,7 @@ class EmployeeRpcServiceTest {
         given(employeeRepository.findByEmailAddress(anyString())).willReturn(Optional.empty());
 
         // when
-        employeeRpcService.existsByEmailAddress(request, new StreamObserver<>(){
+        employeeGrpcStub.existsByEmailAddress(request, new StreamObserver<>(){
 
             @Override
             public void onNext(ExistsResponse existsResponse) {
@@ -85,7 +85,7 @@ class EmployeeRpcServiceTest {
         given(employeeRepository.findByEmailAddress(anyString())).willReturn(Optional.of(employee));
 
         // when
-        employeeRpcService.existsByEmailAddress(request, new StreamObserver<>(){
+        employeeGrpcStub.existsByEmailAddress(request, new StreamObserver<>(){
 
             @Override
             public void onNext(ExistsResponse existsResponse) {

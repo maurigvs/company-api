@@ -16,21 +16,22 @@ public class EmployeeService {
 
     private final EmployeeRepository repository;
 
-    public Employee create(String name, String surname, String emailAddress, String birthDate, String taxId)
+    public Employee create(String name, String surname, String emailAddress,
+                           String birthDateStr, String taxId)
             throws BusinessException {
 
-        LocalDate birthLocalDate = localDateOf(birthDate);
+        LocalDate birthDate = localDateOf(birthDateStr);
 
-        if(isEmployeeUnderage(birthLocalDate))
+        if(employeeUnderage(birthDate))
             throw new BusinessException("The employee must have more than 18 years of age");
 
         if(employeeAlreadyExists(taxId))
             throw new BusinessException("The employee already exists");
 
-        return save(new Employee(null, name, surname, emailAddress, birthLocalDate, taxId));
+        return save(new Employee(null, name, surname, emailAddress, birthDate, taxId));
     }
 
-    private boolean isEmployeeUnderage(LocalDate birthDate) {
+    private boolean employeeUnderage(LocalDate birthDate) {
         return birthDate.isAfter(LocalDate.now().minusYears(18));
     }
 
