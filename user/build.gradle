@@ -2,6 +2,7 @@ plugins {
 	id 'java'
 	id 'org.springframework.boot' version '3.2.0'
 	id 'io.spring.dependency-management' version '1.1.4'
+	id 'com.google.protobuf' version '0.9.4'
 }
 
 group = 'br.com.maurigvs.company'
@@ -21,17 +22,52 @@ repositories {
 	mavenCentral()
 }
 
+def grpcVersion = '1.59.0'
+def protobufVersion = '3.24.0'
+def protocVersion = protobufVersion
+
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation "io.grpc:grpc-protobuf:${grpcVersion}"
+	implementation "io.grpc:grpc-services:${grpcVersion}"
+	implementation "io.grpc:grpc-stub:${grpcVersion}"
+	implementation "com.google.protobuf:protobuf-java-util:${protobufVersion}"
+
 	compileOnly 'org.projectlombok:lombok'
+	compileOnly "org.apache.tomcat:annotations-api:6.0.53"
+
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+
 	runtimeOnly 'com.h2database:h2'
+	runtimeOnly "io.grpc:grpc-netty-shaded:${grpcVersion}"
+
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.assertj:assertj-core:3.24.2'
+	testImplementation "io.grpc:grpc-testing:${grpcVersion}"
+}
+
+protobuf {
+	protoc { artifact = "com.google.protobuf:protoc:${protocVersion}" }
+	plugins {
+		grpc { artifact = "io.grpc:protoc-gen-grpc-java:${grpcVersion}" }
+	}
+	generateProtoTasks {
+		all()*.plugins { grpc {} }
+	}
+}
+
+sourceSets {
+	main {
+		java {
+			srcDirs 'build/generated/source/proto/main/grpc'
+			srcDirs 'build/generated/source/proto/main/java'
+		}
+	}
 }
 
 tasks.named('test') {
 	useJUnitPlatform()
 }
+
