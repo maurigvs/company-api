@@ -5,9 +5,9 @@ import br.com.maurigvs.company.employee.service.EmployeeGrpcStub;
 import io.grpc.Server;
 import io.grpc.ServerBuilder;
 import org.springframework.context.annotation.Bean;
-import org.springframework.stereotype.Component;
+import org.springframework.context.annotation.Configuration;
 
-@Component
+@Configuration
 public class EmployeeRpcConfig {
 
     @Bean

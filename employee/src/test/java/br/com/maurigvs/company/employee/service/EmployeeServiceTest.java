@@ -1,9 +1,9 @@
 package br.com.maurigvs.company.employee.service;
 
+import br.com.maurigvs.company.employee.enums.Status;
 import br.com.maurigvs.company.employee.exception.BusinessException;
 import br.com.maurigvs.company.employee.model.Employee;
 import br.com.maurigvs.company.employee.repository.EmployeeRepository;
-import br.com.maurigvs.company.employee.service.EmployeeService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -38,12 +38,9 @@ class EmployeeServiceTest {
             .willReturn(false);
 
         given(employeeRepository.save(any(Employee.class)))
-            .willReturn(new Employee(1L,
-                "John",
-                "Wayne",
-                "john@wayne.com",
-                LocalDate.of(1987,6,4),
-                "40360193099"));
+            .willReturn(new Employee(1L, "John", "Wayne",
+                    "john@wayne.com", LocalDate.of(1987,6,4),
+                    "40360193099", Status.ACTIVE));
 
         // when
         var result = employeeService.create(
@@ -60,6 +57,8 @@ class EmployeeServiceTest {
         assertThat(result.getEmailAddress()).isEqualTo("john@wayne.com");
         assertThat(result.getBirthDate()).isEqualTo(LocalDate.of(1987,6,4));
         assertThat(result.getTaxId()).isEqualTo("40360193099");
+        assertThat(result.getStatus().getCode()).isEqualTo(Status.ACTIVE.getCode());
+        assertThat(result.getStatus().getLabel()).isEqualTo(Status.ACTIVE.getLabel());
         verify(employeeRepository, times(1)).existsByTaxId("40360193099");
         verify(employeeRepository, times(1)).save(any(Employee.class));
         verifyNoMoreInteractions(employeeRepository);

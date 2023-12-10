@@ -3,14 +3,16 @@ package br.com.maurigvs.company.employee.service;
 import br.com.maurigvs.company.employee.EmployeeData;
 import br.com.maurigvs.company.employee.ExistsRequest;
 import br.com.maurigvs.company.employee.ExistsResponse;
+import br.com.maurigvs.company.employee.enums.Status;
+import br.com.maurigvs.company.employee.model.Employee;
 import br.com.maurigvs.company.employee.repository.EmployeeRepository;
-import br.com.maurigvs.company.employee.utils.Utils;
 import io.grpc.stub.StreamObserver;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
+import java.time.LocalDate;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -67,7 +69,13 @@ class EmployeeGrpcStubTest {
     @Test
     void should_ReturnResponseTrue_when_CallExistsByEmailAddressProcedure() {
         // given
-        var employee = Utils.mockEmployee();
+        var employee = new Employee(1L,
+                "John",
+                "Wayne",
+                "john@wayne.com",
+                LocalDate.of(1985,5,23),
+                "12345678912",
+                Status.ACTIVE);
         var emailAddress = "john@wayne.com";
 
         var request = ExistsRequest.newBuilder()

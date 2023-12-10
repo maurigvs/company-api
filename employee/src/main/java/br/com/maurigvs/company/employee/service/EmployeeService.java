@@ -1,5 +1,6 @@
 package br.com.maurigvs.company.employee.service;
 
+import br.com.maurigvs.company.employee.enums.Status;
 import br.com.maurigvs.company.employee.exception.BusinessException;
 import br.com.maurigvs.company.employee.model.Employee;
 import br.com.maurigvs.company.employee.repository.EmployeeRepository;
@@ -28,7 +29,8 @@ public class EmployeeService {
         if(employeeAlreadyExists(taxId))
             throw new BusinessException("The employee already exists");
 
-        return save(new Employee(null, name, surname, emailAddress, birthDate, taxId));
+        return save(new Employee(null, name, surname, emailAddress,
+                birthDate, taxId, Status.ACTIVE));
     }
 
     private boolean employeeUnderage(LocalDate birthDate) {

@@ -1,5 +1,6 @@
 package br.com.maurigvs.company.employee.model;
 
+import br.com.maurigvs.company.employee.enums.Status;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -23,11 +24,17 @@ public class Employee {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+
     private String name;
+
     private String surname;
+
     private String emailAddress;
+
     private LocalDate birthDate;
 
     @Column(unique = true)
     private String taxId;
+
+    private Status status;
 }
