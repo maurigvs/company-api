@@ -15,4 +15,12 @@ public class UserExceptionHandler {
     public ErrorMessageDto handleBusinessException(BusinessException ex){
         return new ErrorMessageDto(HttpStatus.BAD_REQUEST.getReasonPhrase(), ex.getMessage());
     }
+
+    @ExceptionHandler(TechnicalException.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ResponseBody
+    public ErrorMessageDto handleTechnicalException(TechnicalException ex){
+        return new ErrorMessageDto(HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase(),
+                ex.getMessage() + ": " + ex.getCause());
+    }
 }

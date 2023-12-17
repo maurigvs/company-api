@@ -8,6 +8,7 @@ option java_package = "br.com.maurigvs.company.employee";
 
 service Employee {
   rpc ExistsByEmailAddress(ExistsRequest) returns (ExistsResponse);
+  rpc FindByEmailAddress(FindRequest) returns (EmployeeResponse);
 }
 
 message EmployeeData {
@@ -26,4 +27,14 @@ message ExistsRequest {
 message ExistsResponse {
   bool exists = 1;
   EmployeeData employee = 2;
+}
+
+message FindRequest {
+  string emailAddress = 1;
+}
+
+message EmployeeResponse {
+  int64 id = 1;
+  string fullName = 2;
+  string emailAddress = 3;
 }

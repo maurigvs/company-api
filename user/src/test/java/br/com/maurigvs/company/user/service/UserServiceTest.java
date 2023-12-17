@@ -1,15 +1,5 @@
 package br.com.maurigvs.company.user.service;
 
-import br.com.maurigvs.company.employee.ExistsResponse;
-import br.com.maurigvs.company.user.exception.BusinessException;
-import br.com.maurigvs.company.user.model.User;
-import br.com.maurigvs.company.user.repository.EmployeeRepository;
-import br.com.maurigvs.company.user.repository.UserRepository;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.mockito.ArgumentMatchers.any;
@@ -20,11 +10,28 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 
+import java.util.Optional;
+
+import br.com.maurigvs.company.employee.EmployeeResponse;
+import br.com.maurigvs.company.user.exception.BusinessException;
+import br.com.maurigvs.company.user.exception.TechnicalException;
+import br.com.maurigvs.company.user.model.User;
+import br.com.maurigvs.company.user.repository.EmployeeRepository;
+import br.com.maurigvs.company.user.repository.UserRepository;
+
+import org.junit.jupiter.api.DisplayNameGeneration;
+import org.junit.jupiter.api.DisplayNameGenerator;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+
 @SpringBootTest(classes = {UserService.class})
+@DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
 class UserServiceTest {
 
     @Autowired
-    UserService userService;
+    UserService service;
 
     @MockBean
     UserRepository userRepository;
@@ -33,39 +40,41 @@ class UserServiceTest {
     EmployeeRepository employeeRepository;
 
     @Test
-    void should_ReturnUser_when_SaveUser() throws BusinessException {
+    void should_create_user_successfully() throws BusinessException, TechnicalException {
         // given
         given(userRepository.existsByLogin(anyString()))
-            .willReturn(false);
+                .willReturn(false);
 
-        given(employeeRepository.existsByEmailAddress(anyString()))
-            .willReturn(ExistsResponse.newBuilder().setExists(true).build());
+        given(employeeRepository.findByEmailAddress(anyString()))
+                .willReturn(Optional.of(EmployeeResponse.getDefaultInstance()));
 
         given(userRepository.save(any(User.class)))
-            .willReturn(new User(1L, "john@wayne.com"));
+                .willReturn(new User(1L, "john@wayne.com"));
 
         // when
-        var result = userService.create("john@wayne.com");
+        var result = service.create("john@wayne.com");
 
         // then
         assertThat(result.getId()).isEqualTo(1L);
         assertThat(result.getLogin()).isEqualTo("john@wayne.com");
+
         verify(userRepository, times(1)).existsByLogin(anyString());
-        verify(employeeRepository, times(1)).existsByEmailAddress(anyString());
+        verify(employeeRepository, times(1)).findByEmailAddress(anyString());
         verify(userRepository, times(1)).save(any(User.class));
+
         verifyNoMoreInteractions(userRepository);
         verifyNoMoreInteractions(employeeRepository);
     }
 
     @Test
-    void should_ThrowBusinessException_when_LoginAlreadyExists(){
+    void should_throw_business_exception_when_login_already_exists(){
         // given
         given(userRepository.existsByLogin(anyString()))
             .willReturn(true);
 
         // when, then
         assertThatExceptionOfType(BusinessException.class)
-            .isThrownBy(() -> userService.create("john@wayne.com"))
+            .isThrownBy(() -> service.create("john@wayne.com"))
             .withMessage("The user is already registered");
 
         verify(userRepository, times(1)).existsByLogin("john@wayne.com");
@@ -74,21 +83,41 @@ class UserServiceTest {
     }
 
     @Test
-    void should_ThrowBusinessException_when_UserIsNotEmployee(){
+    void should_throw_business_exception_when_user_is_not_employee() throws TechnicalException {
         // given
         given(userRepository.existsByLogin(anyString()))
                 .willReturn(false);
 
-        given(employeeRepository.existsByEmailAddress(anyString()))
-                .willReturn(ExistsResponse.newBuilder().setExists(false).build());
+        given(employeeRepository.findByEmailAddress(anyString()))
+                .willReturn(Optional.empty());
 
         // when, then
         assertThatExceptionOfType(BusinessException.class)
-                .isThrownBy(() -> userService.create("john@wayne.com"))
+                .isThrownBy(() -> service.create("john@wayne.com"))
                 .withMessage("The user must be a employee registered");
 
         verify(userRepository, times(1)).existsByLogin("john@wayne.com");
-        verify(employeeRepository, times(1)).existsByEmailAddress(anyString());
+        verify(employeeRepository, times(1)).findByEmailAddress(anyString());
+        verifyNoMoreInteractions(userRepository);
+        verifyNoMoreInteractions(employeeRepository);
+    }
+
+    @Test
+    void should_throw_technical_exception_when_employee_verification_fails() throws TechnicalException {
+        // given
+        given(userRepository.existsByLogin(anyString()))
+                .willReturn(false);
+
+        given(employeeRepository.findByEmailAddress(anyString()))
+                .willThrow(new TechnicalException("Server error message", null));
+
+        // when, then
+        assertThatExceptionOfType(TechnicalException.class)
+                .isThrownBy(() -> service.create("john@wayne.com"))
+                .withMessage("Server error message");
+
+        verify(userRepository, times(1)).existsByLogin("john@wayne.com");
+        verify(employeeRepository, times(1)).findByEmailAddress(anyString());
         verifyNoMoreInteractions(userRepository);
         verifyNoMoreInteractions(employeeRepository);
     }

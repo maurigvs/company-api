@@ -1,5 +1,6 @@
 package br.com.maurigvs.company.user.service;
 
+import br.com.maurigvs.company.user.exception.TechnicalException;
 import br.com.maurigvs.company.user.repository.EmployeeRepository;
 import br.com.maurigvs.company.user.repository.UserRepository;
 import br.com.maurigvs.company.user.exception.BusinessException;
@@ -14,7 +15,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final EmployeeRepository employeeRepository;
 
-    public User create(String login) throws BusinessException {
+    public User create(String login) throws BusinessException, TechnicalException {
         if(existsByLogin(login))
             throw new BusinessException("The user is already registered");
 
@@ -24,8 +25,8 @@ public class UserService {
         return save(new User(null, login));
     }
 
-    private boolean userNotEmployee(String login) {
-        return !employeeRepository.existsByEmailAddress(login).getExists();
+    private boolean userNotEmployee(String login) throws TechnicalException {
+        return employeeRepository.findByEmailAddress(login).isEmpty();
     }
 
     private boolean existsByLogin(String login) {

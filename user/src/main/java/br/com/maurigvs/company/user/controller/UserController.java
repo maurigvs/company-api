@@ -1,5 +1,6 @@
 package br.com.maurigvs.company.user.controller;
 
+import br.com.maurigvs.company.user.exception.TechnicalException;
 import br.com.maurigvs.company.user.service.UserService;
 import br.com.maurigvs.company.user.exception.BusinessException;
 import br.com.maurigvs.company.user.model.UserDto;
@@ -20,7 +21,7 @@ public class UserController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public void postEmployee(@RequestBody UserDto request) throws BusinessException {
+    public void postEmployee(@RequestBody UserDto request) throws BusinessException, TechnicalException {
         userService.create(request.getLogin());
     }
 }

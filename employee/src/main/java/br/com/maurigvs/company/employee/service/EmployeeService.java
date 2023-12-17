@@ -1,15 +1,17 @@
 package br.com.maurigvs.company.employee.service;
 
+import java.time.DateTimeException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
 import br.com.maurigvs.company.employee.enums.Status;
 import br.com.maurigvs.company.employee.exception.BusinessException;
 import br.com.maurigvs.company.employee.model.Employee;
 import br.com.maurigvs.company.employee.repository.EmployeeRepository;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
 
-import java.time.DateTimeException;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
+import lombok.RequiredArgsConstructor;
+
+import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
@@ -49,7 +51,7 @@ public class EmployeeService {
         var dateFormat = "dd/MM/yyyy";
         try{
             return LocalDate.from(DateTimeFormatter.ofPattern(dateFormat).parse(birthDate));
-        } catch (DateTimeException exception){
+        } catch (DateTimeException ex){
             throw new BusinessException("The birth date must be in the format: " + dateFormat);
         }
     }
