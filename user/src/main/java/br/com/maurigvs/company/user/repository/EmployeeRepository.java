@@ -34,7 +34,7 @@ public class EmployeeRepository {
                 return Optional.empty();
             } else {
                 log.error("Error on findByEmailAddress with [" + emailAddress + "]", ex.getCause());
-                throw new TechnicalException(ex.getMessage(), ex.getCause());
+                throw new TechnicalException(ex.getStatus().getDescription(), ex.getCause());
             }
         }
     }
