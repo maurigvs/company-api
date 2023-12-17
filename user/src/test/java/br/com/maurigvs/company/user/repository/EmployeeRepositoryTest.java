@@ -8,11 +8,8 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 
-import br.com.maurigvs.company.employee.EmployeeData;
 import br.com.maurigvs.company.employee.EmployeeGrpc;
 import br.com.maurigvs.company.employee.EmployeeResponse;
-import br.com.maurigvs.company.employee.ExistsRequest;
-import br.com.maurigvs.company.employee.ExistsResponse;
 import br.com.maurigvs.company.employee.FindRequest;
 import br.com.maurigvs.company.user.exception.TechnicalException;
 
@@ -35,35 +32,6 @@ class EmployeeRepositoryTest {
 
     @MockBean
     EmployeeGrpc.EmployeeBlockingStub stub;
-
-    @Test
-    void should_ReturnExistsFalse_when_CallExistsByEmailAddress() {
-        // given
-        given(stub.existsByEmailAddress(any(ExistsRequest.class)))
-            .willReturn(ExistsResponse.newBuilder().setExists(false).build());
-        // when
-        ExistsResponse result = repository.existsByEmailAddress("john@wayne.com");
-        // then
-        assertThat(result.getExists()).isFalse();
-        assertThat(result.getEmployee()).isEqualTo(EmployeeData.getDefaultInstance());
-        verify(stub, times(1)).existsByEmailAddress(any(ExistsRequest.class));
-        verifyNoMoreInteractions(stub);
-    }
-
-    @Test
-    void should_ReturnExistsTrue_when_CallExistsByEmailAddress() {
-        // given
-        var employeeData = EmployeeData.newBuilder().setId(1L).build();
-        given(stub.existsByEmailAddress(any(ExistsRequest.class)))
-            .willReturn(ExistsResponse.newBuilder().setExists(true).setEmployee(employeeData).build());
-        // whenR
-        ExistsResponse result = repository.existsByEmailAddress("john@wayne.com");
-        // then
-        assertThat(result.getExists()).isTrue();
-        assertThat(result.getEmployee()).isEqualTo(employeeData);
-        verify(stub, times(1)).existsByEmailAddress(any(ExistsRequest.class));
-        verifyNoMoreInteractions(stub);
-    }
 
     @Test
     void should_return_employee_data_when_find_by_email_address_success() throws TechnicalException {

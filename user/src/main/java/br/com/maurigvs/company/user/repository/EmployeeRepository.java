@@ -4,8 +4,6 @@ import java.util.Optional;
 
 import br.com.maurigvs.company.employee.EmployeeGrpc;
 import br.com.maurigvs.company.employee.EmployeeResponse;
-import br.com.maurigvs.company.employee.ExistsRequest;
-import br.com.maurigvs.company.employee.ExistsResponse;
 import br.com.maurigvs.company.employee.FindRequest;
 import br.com.maurigvs.company.user.exception.TechnicalException;
 
@@ -23,13 +21,6 @@ import org.springframework.stereotype.Repository;
 public class EmployeeRepository {
 
     private final EmployeeGrpc.EmployeeBlockingStub repository;
-
-    public ExistsResponse existsByEmailAddress(String emailAddress){
-        return repository.existsByEmailAddress(
-                ExistsRequest.newBuilder()
-                    .setEmailAddress(emailAddress)
-                    .build());
-    }
 
     public Optional<EmployeeResponse> findByEmailAddress(String emailAddress) throws TechnicalException {
         try {

@@ -7,26 +7,7 @@ package employee;
 option java_package = "br.com.maurigvs.company.employee";
 
 service Employee {
-  rpc ExistsByEmailAddress(ExistsRequest) returns (ExistsResponse);
   rpc FindByEmailAddress(FindRequest) returns (EmployeeResponse);
-}
-
-message EmployeeData {
-  int64 id = 1;
-  string name = 2;
-  string surname = 3;
-  string emailAddress = 4;
-  string birthDate = 5;
-  string taxId = 6;
-}
-
-message ExistsRequest {
-  string emailAddress = 1;
-}
-
-message ExistsResponse {
-  bool exists = 1;
-  EmployeeData employee = 2;
 }
 
 message FindRequest {
