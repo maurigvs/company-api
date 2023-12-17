@@ -16,6 +16,7 @@ import br.com.maurigvs.company.employee.EmployeeResponse;
 import br.com.maurigvs.company.user.exception.BusinessException;
 import br.com.maurigvs.company.user.exception.TechnicalException;
 import br.com.maurigvs.company.user.model.User;
+import br.com.maurigvs.company.user.model.UserResponse;
 import br.com.maurigvs.company.user.repository.EmployeeRepository;
 import br.com.maurigvs.company.user.repository.UserRepository;
 
@@ -126,5 +127,82 @@ class UserServiceTest {
         verify(employeeRepository, times(1)).findByEmailAddress(anyString());
         verifyNoMoreInteractions(userRepository);
         verifyNoMoreInteractions(employeeRepository);
+    }
+
+    @Test
+    void should_return_user_when_get_by_login() throws TechnicalException, BusinessException {
+        // given
+        var login = "john@wayne.com";
+        var user = Optional.of(new User(1L, "john@wayne.com", 2L));
+        var employee = Optional.of(EmployeeResponse.newBuilder().setFullName("John Wayne").build());
+        var expected = new UserResponse("John Wayne", "john@wayne.com");
+
+        given(userRepository.findByLogin(anyString())).willReturn(user);
+        given(employeeRepository.findByEmailAddress(anyString())).willReturn(employee);
+
+        // when
+        var result = service.getByLogin(login);
+
+        // then
+        assertThat(result).isEqualTo(expected);
+        verify(userRepository, times(1)).findByLogin(login);
+        verify(employeeRepository, times(1)).findByEmailAddress(login);
+        verifyNoMoreInteractions(userRepository, employeeRepository);
+    }
+
+    @Test
+    void should_throw_business_exception_when_user_not_found_by_login() {
+        // given
+        var login = "john@wayne.com";
+        given(userRepository.findByLogin(anyString())).willReturn(Optional.empty());
+
+        // when, then
+        assertThatExceptionOfType(BusinessException.class)
+                .isThrownBy(() -> service.getByLogin(login))
+                .withMessage("User not found");
+
+        verify(userRepository, times(1)).findByLogin(login);
+        verifyNoMoreInteractions(userRepository);
+        verifyNoInteractions(employeeRepository);
+    }
+
+    @Test
+    void should_throw_business_exception_when_employee_find_fails() throws TechnicalException {
+        // given
+        var login = "john@wayne.com";
+        var user = Optional.of(new User(1L, "john@wayne.com", 2L));
+
+        given(userRepository.findByLogin(anyString())).willReturn(user);
+        given(employeeRepository.findByEmailAddress(anyString())).willReturn(Optional.empty());
+
+        // when, then
+        assertThatExceptionOfType(BusinessException.class)
+                .isThrownBy(() -> service.getByLogin(login))
+                .withMessage("User's information is missing");
+
+        verify(userRepository, times(1)).findByLogin(login);
+        verify(employeeRepository, times(1)).findByEmailAddress(login);
+        verifyNoMoreInteractions(userRepository, employeeRepository);
+    }
+
+    @Test
+    void should_throw_technical_exception_when_employee_find_fails() throws TechnicalException {
+        // given
+        var login = "john@wayne.com";
+
+        given(userRepository.findByLogin(anyString()))
+                .willReturn(Optional.of(new User(1L, "john@wayne.com", 2L)));
+
+        given(employeeRepository.findByEmailAddress(anyString()))
+                .willThrow(new TechnicalException("Server error", null));
+
+        // when, then
+        assertThatExceptionOfType(TechnicalException.class)
+                .isThrownBy(() -> service.getByLogin(login))
+                .withMessage("Server error");
+
+        verify(userRepository, times(1)).findByLogin(login);
+        verify(employeeRepository, times(1)).findByEmailAddress(login);
+        verifyNoMoreInteractions(userRepository, employeeRepository);
     }
 }

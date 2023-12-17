@@ -1,11 +1,14 @@
 package br.com.maurigvs.company.user.controller;
 
 import br.com.maurigvs.company.user.exception.TechnicalException;
+import br.com.maurigvs.company.user.model.UserResponse;
 import br.com.maurigvs.company.user.service.UserService;
 import br.com.maurigvs.company.user.exception.BusinessException;
 import br.com.maurigvs.company.user.model.UserDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,7 +24,13 @@ public class UserController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public void postEmployee(@RequestBody UserDto request) throws BusinessException, TechnicalException {
+    public void postUser(@RequestBody UserDto request) throws BusinessException, TechnicalException {
         userService.create(request.getLogin());
+    }
+
+    @GetMapping("/{login}")
+    @ResponseStatus(HttpStatus.OK)
+    public UserResponse getUserByLogin(@PathVariable String login) throws BusinessException, TechnicalException {
+        return userService.getByLogin(login);
     }
 }

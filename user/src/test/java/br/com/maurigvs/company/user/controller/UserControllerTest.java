@@ -1,13 +1,14 @@
 package br.com.maurigvs.company.user.controller;
 
 import static br.com.maurigvs.company.user.utils.Utils.jsonStringOf;
-import static br.com.maurigvs.company.user.utils.Utils.messageResponseOf;
+import static br.com.maurigvs.company.user.utils.Utils.errorMessageOf;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -16,6 +17,7 @@ import br.com.maurigvs.company.user.exception.BusinessException;
 import br.com.maurigvs.company.user.exception.ErrorMessageDto;
 import br.com.maurigvs.company.user.exception.TechnicalException;
 import br.com.maurigvs.company.user.model.UserDto;
+import br.com.maurigvs.company.user.model.UserResponse;
 import br.com.maurigvs.company.user.service.UserService;
 
 import org.junit.jupiter.api.DisplayNameGeneration;
@@ -58,6 +60,26 @@ class UserControllerTest {
     }
 
     @Test
+    void should_return_ok_when_get_user_by_login() throws Exception {
+        // given
+        var user = new UserResponse("John Wayne", "john@wayne.com");
+        var responseAsJson = jsonStringOf(user);
+        given(userService.getByLogin(anyString())).willReturn(user);
+
+        // when
+        var result = mockMvc.perform(
+                get("/user/john@wayne.com"))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+            .andExpect(content().json(responseAsJson));
+
+        // then
+        assertThat(result.andReturn().getResponse().getContentAsString()).isEqualTo(responseAsJson);
+        verify(userService, times(1)).getByLogin("john@wayne.com");
+        verifyNoMoreInteractions(userService);
+    }
+
+    @Test
     void should_return_bad_request_when_business_exception_is_thrown() throws Exception {
         // given
         var messageExpected = "The user is already registered";
@@ -78,7 +100,7 @@ class UserControllerTest {
             .andExpect(content().json(responseAsJson));
 
         // then
-        var response = messageResponseOf(resultActions
+        var response = errorMessageOf(resultActions
             .andReturn().getResponse().getContentAsString());
 
         assertThat(response.getError()).isEqualTo(HttpStatus.BAD_REQUEST.getReasonPhrase());
@@ -109,7 +131,7 @@ class UserControllerTest {
                 .andExpect(content().json(responseAsJson));
 
         // then
-        var response = messageResponseOf(resultActions
+        var response = errorMessageOf(resultActions
                 .andReturn().getResponse().getContentAsString());
 
         assertThat(response.getError()).isEqualTo(HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase());

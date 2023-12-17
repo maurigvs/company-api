@@ -1,11 +1,13 @@
 package br.com.maurigvs.company.user.service;
 
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import br.com.maurigvs.company.employee.EmployeeResponse;
 import br.com.maurigvs.company.user.exception.BusinessException;
 import br.com.maurigvs.company.user.exception.TechnicalException;
 import br.com.maurigvs.company.user.model.User;
+import br.com.maurigvs.company.user.model.UserResponse;
 import br.com.maurigvs.company.user.repository.EmployeeRepository;
 import br.com.maurigvs.company.user.repository.UserRepository;
 
@@ -41,5 +43,26 @@ public class UserService {
 
     private User save(User user){
         return userRepository.save(user);
+    }
+
+    public UserResponse getByLogin(String login) throws BusinessException, TechnicalException {
+        var user = findByLogin(login);
+        var employee = findEmployeeByLogin(login);
+        return new UserResponse(employee.getFullName(), user.getLogin());
+    }
+
+    private User findByLogin(String login) throws BusinessException {
+        try{
+            return userRepository.findByLogin(login).orElseThrow();
+        } catch (NoSuchElementException ex){
+            throw new BusinessException("User not found");
+        }
+    }
+
+    private EmployeeResponse findEmployeeByLogin(String login) throws BusinessException, TechnicalException {
+        var employee = employeeRepository.findByEmailAddress(login);
+        if(employee.isEmpty())
+            throw new BusinessException("User's information is missing");
+        return employee.get();
     }
 }

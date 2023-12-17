@@ -17,7 +17,7 @@ public class Utils {
         }
     }
 
-    public static ErrorMessageDto messageResponseOf(String response){
+    public static ErrorMessageDto errorMessageOf(String response){
         try {
             var om = new ObjectMapper();
             om.registerModule(new JavaTimeModule());
