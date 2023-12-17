@@ -24,4 +24,6 @@ public class User {
 
     @Column(unique = true)
     private String login;
+
+    private Long employeeId;
 }

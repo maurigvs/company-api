@@ -22,6 +22,8 @@ import br.com.maurigvs.company.user.repository.UserRepository;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -39,17 +41,22 @@ class UserServiceTest {
     @MockBean
     EmployeeRepository employeeRepository;
 
+    @Captor
+    ArgumentCaptor<User> userCaptor;
+
     @Test
     void should_create_user_successfully() throws BusinessException, TechnicalException {
         // given
+        var employeeResponse = EmployeeResponse.newBuilder().setId(2L).build();
+
         given(userRepository.existsByLogin(anyString()))
                 .willReturn(false);
 
         given(employeeRepository.findByEmailAddress(anyString()))
-                .willReturn(Optional.of(EmployeeResponse.getDefaultInstance()));
+                .willReturn(Optional.of(employeeResponse));
 
         given(userRepository.save(any(User.class)))
-                .willReturn(new User(1L, "john@wayne.com"));
+                .willReturn(new User(1L, "john@wayne.com", 2L));
 
         // when
         var result = service.create("john@wayne.com");
@@ -57,11 +64,10 @@ class UserServiceTest {
         // then
         assertThat(result.getId()).isEqualTo(1L);
         assertThat(result.getLogin()).isEqualTo("john@wayne.com");
-
         verify(userRepository, times(1)).existsByLogin(anyString());
         verify(employeeRepository, times(1)).findByEmailAddress(anyString());
-        verify(userRepository, times(1)).save(any(User.class));
-
+        verify(userRepository, times(1)).save(userCaptor.capture());
+        assertThat(userCaptor.getValue().getEmployeeId()).isEqualTo(employeeResponse.getId());
         verifyNoMoreInteractions(userRepository);
         verifyNoMoreInteractions(employeeRepository);
     }
