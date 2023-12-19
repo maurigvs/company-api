@@ -1,9 +1,9 @@
 package br.com.maurigvs.company.user.controller;
 
 import br.com.maurigvs.company.user.exception.BusinessException;
-import br.com.maurigvs.company.user.exception.ErrorMessageDto;
+import br.com.maurigvs.company.user.exception.ErrorResponse;
 import br.com.maurigvs.company.user.exception.TechnicalException;
-import br.com.maurigvs.company.user.model.UserRequestDto;
+import br.com.maurigvs.company.user.model.UserRequest;
 import br.com.maurigvs.company.user.model.UserResponse;
 import br.com.maurigvs.company.user.service.UserService;
 import org.junit.jupiter.api.DisplayNameGeneration;
@@ -44,7 +44,7 @@ class UserControllerTest {
     @Test
     void should_return_created_when_post_user() throws Exception {
         // given
-        final var requestAsJson = jsonStringOf(new UserRequestDto("john@wayne.com"));
+        final var requestAsJson = jsonStringOf(new UserRequest("john@wayne.com"));
 
         // when
         mockMvc.perform(
@@ -82,8 +82,8 @@ class UserControllerTest {
     void should_return_bad_request_when_business_exception_is_thrown() throws Exception {
         // given
         final var messageExpected = "The user is already registered";
-        final var requestAsJson = jsonStringOf(new UserRequestDto("john@wayne.com"));
-        final var responseAsJson = jsonStringOf(new ErrorMessageDto(
+        final var requestAsJson = jsonStringOf(new UserRequest("john@wayne.com"));
+        final var responseAsJson = jsonStringOf(new ErrorResponse(
                 HttpStatus.BAD_REQUEST.getReasonPhrase(), messageExpected));
 
         given(userService.create(anyString()))
@@ -113,8 +113,8 @@ class UserControllerTest {
     void should_return_internal_server_error_when_technical_exception_is_thrown() throws Exception {
         // given
         final var messageExpected = "Connection refused: null";
-        final var requestAsJson = jsonStringOf(new UserRequestDto("john@wayne.com"));
-        final var responseAsJson = jsonStringOf(new ErrorMessageDto(
+        final var requestAsJson = jsonStringOf(new UserRequest("john@wayne.com"));
+        final var responseAsJson = jsonStringOf(new ErrorResponse(
                 HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase(), messageExpected));
 
         given(userService.create(anyString()))

@@ -1,8 +1,8 @@
 package br.com.maurigvs.company.employee.controller;
 
 import br.com.maurigvs.company.employee.exception.BusinessException;
-import br.com.maurigvs.company.employee.exception.ErrorResponseDto;
-import br.com.maurigvs.company.employee.model.EmployeeRequestDto;
+import br.com.maurigvs.company.employee.exception.ErrorResponse;
+import br.com.maurigvs.company.employee.model.EmployeeRequest;
 import br.com.maurigvs.company.employee.service.EmployeeService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,7 +38,7 @@ class EmployeeControllerTest {
     @Test
     void should_ReturnCreated_when_PostEmployee() throws Exception {
         // given
-        final var requestAsJson = jsonStringOf(new EmployeeRequestDto("John", "Wayne",
+        final var requestAsJson = jsonStringOf(new EmployeeRequest("John", "Wayne",
                 "john@wayne.com", "25/08/1963", "40360193099"));
 
         // when
@@ -62,10 +62,10 @@ class EmployeeControllerTest {
         // given
         final var messageExpected = "The birth date must be in the format: dd/MM/yyyy";
 
-        final var requestAsJson = jsonStringOf(new EmployeeRequestDto("John", "Wayne",
+        final var requestAsJson = jsonStringOf(new EmployeeRequest("John", "Wayne",
                 "john@wayne.com", "4/6/87", "40360193099"));
 
-        final var responseAsJson = jsonStringOf(new ErrorResponseDto(
+        final var responseAsJson = jsonStringOf(new ErrorResponse(
             HttpStatus.BAD_REQUEST.getReasonPhrase(), messageExpected));
 
         given(employeeService.create(anyString(), anyString(), anyString(), anyString(),

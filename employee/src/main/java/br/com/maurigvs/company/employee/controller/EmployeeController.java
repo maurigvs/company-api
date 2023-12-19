@@ -1,6 +1,6 @@
 package br.com.maurigvs.company.employee.controller;
 
-import br.com.maurigvs.company.employee.model.EmployeeRequestDto;
+import br.com.maurigvs.company.employee.model.EmployeeRequest;
 import br.com.maurigvs.company.employee.service.EmployeeService;
 import br.com.maurigvs.company.employee.exception.BusinessException;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +20,7 @@ public class EmployeeController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public void postEmployee(@RequestBody EmployeeRequestDto request) throws BusinessException {
+    public void postEmployee(@RequestBody EmployeeRequest request) throws BusinessException {
         service.create(request.nome(), request.sobrenome(), request.email(),
                 request.dataDeNascimento(), request.numeroCpf());
     }
