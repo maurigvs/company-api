@@ -1,9 +1,8 @@
 package br.com.maurigvs.company.employee.controller;
 
-import br.com.maurigvs.company.employee.controller.EmployeeController;
 import br.com.maurigvs.company.employee.exception.BusinessException;
-import br.com.maurigvs.company.employee.exception.ErrorMessageDto;
-import br.com.maurigvs.company.employee.model.EmployeeDto;
+import br.com.maurigvs.company.employee.exception.ErrorResponseDto;
+import br.com.maurigvs.company.employee.model.EmployeeRequestDto;
 import br.com.maurigvs.company.employee.service.EmployeeService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,13 +38,8 @@ class EmployeeControllerTest {
     @Test
     void should_ReturnCreated_when_PostEmployee() throws Exception {
         // given
-        var request = new EmployeeDto(
-            "John",
-            "Wayne",
-            "john@wayne.com",
-            "25/08/1963",
-            "40360193099");
-        var requestAsJson = jsonStringOf(request);
+        final var requestAsJson = jsonStringOf(new EmployeeRequestDto("John", "Wayne",
+                "john@wayne.com", "25/08/1963", "40360193099"));
 
         // when
         mockMvc.perform(
@@ -66,23 +60,19 @@ class EmployeeControllerTest {
     @Test
     void should_ReturnBadRequest_when_BusinessExceptionIsThrown() throws Exception {
         // given
-        var messageExpected = "The birth date must be in the format: dd/MM/yyyy";
+        final var messageExpected = "The birth date must be in the format: dd/MM/yyyy";
 
-        var requestAsJson = jsonStringOf(new EmployeeDto(
-            "John",
-            "Wayne",
-            "john@wayne.com",
-            "4/6/87",
-            "40360193099"));
+        final var requestAsJson = jsonStringOf(new EmployeeRequestDto("John", "Wayne",
+                "john@wayne.com", "4/6/87", "40360193099"));
 
-        var responseAsJson = jsonStringOf(new ErrorMessageDto(
+        final var responseAsJson = jsonStringOf(new ErrorResponseDto(
             HttpStatus.BAD_REQUEST.getReasonPhrase(), messageExpected));
 
         given(employeeService.create(anyString(), anyString(), anyString(), anyString(),
             anyString())).willThrow(new BusinessException(messageExpected));
 
         // when, then
-        var resultActions = mockMvc.perform(
+        final var resultActions = mockMvc.perform(
             post("/employee")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(requestAsJson))
@@ -90,10 +80,10 @@ class EmployeeControllerTest {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON))
             .andExpect(content().json(responseAsJson));
 
-        var response = messageResponseOf(resultActions
+        final var response = messageResponseOf(resultActions
             .andReturn().getResponse().getContentAsString());
 
-        assertThat(response.getError()).isEqualTo(HttpStatus.BAD_REQUEST.getReasonPhrase());
-        assertThat(response.getMessage()).isEqualTo(messageExpected);
+        assertThat(response.error()).isEqualTo(HttpStatus.BAD_REQUEST.getReasonPhrase());
+        assertThat(response.message()).isEqualTo(messageExpected);
     }
 }

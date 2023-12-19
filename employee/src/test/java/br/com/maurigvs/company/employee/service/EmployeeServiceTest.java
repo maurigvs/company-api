@@ -43,7 +43,7 @@ class EmployeeServiceTest {
                     "40360193099", Status.ACTIVE));
 
         // when
-        var result = employeeService.create(
+        final var result = employeeService.create(
             "John",
             "Wayne",
             "john@wayne.com",
@@ -80,7 +80,7 @@ class EmployeeServiceTest {
     @Test
     void should_ThrowBusinessException_when_EmployeeIsUnderage(){
         // given
-        var birthDate = LocalDate.now().minusYears(18).plusDays(1)
+        final var birthDate = LocalDate.now().minusYears(18).plusDays(1)
             .format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
 
         // when, then

@@ -1,16 +1,5 @@
 package br.com.maurigvs.company.user.exception;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+public record ErrorMessageDto(String error, String message){
 
-import java.io.Serializable;
-
-@NoArgsConstructor
-@AllArgsConstructor
-@Getter
-public class ErrorMessageDto implements Serializable {
-
-    private String error;
-    private String message;
 }

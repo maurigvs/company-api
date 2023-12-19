@@ -12,7 +12,7 @@ public class EmployeeExceptionHandler {
     @ExceptionHandler(BusinessException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ResponseBody
-    public ErrorMessageDto handleBusinessException(BusinessException ex){
-        return new ErrorMessageDto(HttpStatus.BAD_REQUEST.getReasonPhrase(), ex.getMessage());
+    public ErrorResponseDto handleBusinessException(BusinessException ex){
+        return new ErrorResponseDto(HttpStatus.BAD_REQUEST.getReasonPhrase(), ex.getMessage());
     }
 }

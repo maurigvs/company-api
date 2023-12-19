@@ -48,7 +48,7 @@ public class EmployeeService {
     }
 
     private static LocalDate localDateOf(String birthDate) throws BusinessException {
-        var dateFormat = "dd/MM/yyyy";
+        final var dateFormat = "dd/MM/yyyy";
         try{
             return LocalDate.from(DateTimeFormatter.ofPattern(dateFormat).parse(birthDate));
         } catch (DateTimeException ex){

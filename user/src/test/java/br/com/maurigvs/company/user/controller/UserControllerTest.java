@@ -1,25 +1,11 @@
 package br.com.maurigvs.company.user.controller;
 
-import static br.com.maurigvs.company.user.utils.Utils.jsonStringOf;
-import static br.com.maurigvs.company.user.utils.Utils.errorMessageOf;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
 import br.com.maurigvs.company.user.exception.BusinessException;
 import br.com.maurigvs.company.user.exception.ErrorMessageDto;
 import br.com.maurigvs.company.user.exception.TechnicalException;
-import br.com.maurigvs.company.user.model.UserDto;
+import br.com.maurigvs.company.user.model.UserRequestDto;
 import br.com.maurigvs.company.user.model.UserResponse;
 import br.com.maurigvs.company.user.service.UserService;
-
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
@@ -30,6 +16,19 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+
+import static br.com.maurigvs.company.user.utils.Utils.errorMessageOf;
+import static br.com.maurigvs.company.user.utils.Utils.jsonStringOf;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(UserController.class)
 @AutoConfigureMockMvc
@@ -45,7 +44,7 @@ class UserControllerTest {
     @Test
     void should_return_created_when_post_user() throws Exception {
         // given
-        var requestAsJson = jsonStringOf(new UserDto("john@wayne.com"));
+        var requestAsJson = jsonStringOf(new UserRequestDto("john@wayne.com"));
 
         // when
         mockMvc.perform(
@@ -83,7 +82,7 @@ class UserControllerTest {
     void should_return_bad_request_when_business_exception_is_thrown() throws Exception {
         // given
         var messageExpected = "The user is already registered";
-        var requestAsJson = jsonStringOf(new UserDto("john@wayne.com"));
+        var requestAsJson = jsonStringOf(new UserRequestDto("john@wayne.com"));
         var responseAsJson = jsonStringOf(new ErrorMessageDto(
                 HttpStatus.BAD_REQUEST.getReasonPhrase(), messageExpected));
 
@@ -103,8 +102,8 @@ class UserControllerTest {
         var response = errorMessageOf(resultActions
             .andReturn().getResponse().getContentAsString());
 
-        assertThat(response.getError()).isEqualTo(HttpStatus.BAD_REQUEST.getReasonPhrase());
-        assertThat(response.getMessage()).isEqualTo(messageExpected);
+        assertThat(response.error()).isEqualTo(HttpStatus.BAD_REQUEST.getReasonPhrase());
+        assertThat(response.message()).isEqualTo(messageExpected);
 
         verify(userService, times(1)).create("john@wayne.com");
         verifyNoMoreInteractions(userService);
@@ -114,7 +113,7 @@ class UserControllerTest {
     void should_return_internal_server_error_when_technical_exception_is_thrown() throws Exception {
         // given
         var messageExpected = "Connection refused: null";
-        var requestAsJson = jsonStringOf(new UserDto("john@wayne.com"));
+        var requestAsJson = jsonStringOf(new UserRequestDto("john@wayne.com"));
         var responseAsJson = jsonStringOf(new ErrorMessageDto(
                 HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase(), messageExpected));
 
@@ -134,8 +133,8 @@ class UserControllerTest {
         var response = errorMessageOf(resultActions
                 .andReturn().getResponse().getContentAsString());
 
-        assertThat(response.getError()).isEqualTo(HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase());
-        assertThat(response.getMessage()).isEqualTo(messageExpected);
+        assertThat(response.error()).isEqualTo(HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase());
+        assertThat(response.message()).isEqualTo(messageExpected);
 
         verify(userService, times(1)).create("john@wayne.com");
         verifyNoMoreInteractions(userService);

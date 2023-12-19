@@ -4,7 +4,7 @@ import br.com.maurigvs.company.user.exception.TechnicalException;
 import br.com.maurigvs.company.user.model.UserResponse;
 import br.com.maurigvs.company.user.service.UserService;
 import br.com.maurigvs.company.user.exception.BusinessException;
-import br.com.maurigvs.company.user.model.UserDto;
+import br.com.maurigvs.company.user.model.UserRequestDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,8 +24,8 @@ public class UserController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public void postUser(@RequestBody UserDto request) throws BusinessException, TechnicalException {
-        userService.create(request.getLogin());
+    public void postUser(@RequestBody UserRequestDto request) throws BusinessException, TechnicalException {
+        userService.create(request.login());
     }
 
     @GetMapping("/{login}")
