@@ -36,7 +36,7 @@ class EmployeeRepositoryTest {
     @Test
     void should_return_employee_data_when_find_by_email_address_success() throws TechnicalException {
         // given
-        var grpcResponse = EmployeeResponse.newBuilder()
+        final var grpcResponse = EmployeeResponse.newBuilder()
                 .setId(1L)
                 .setFullName("John Wayne")
                 .setEmailAddress("john@wayne.com")
@@ -44,7 +44,7 @@ class EmployeeRepositoryTest {
         given(stub.findByEmailAddress(any(FindRequest.class))).willReturn(grpcResponse);
 
         // when
-        var response = repository.findByEmailAddress("john@wayne.com");
+        final var response = repository.findByEmailAddress("john@wayne.com");
 
         // then
         assertThat(response).isPresent();
@@ -58,12 +58,12 @@ class EmployeeRepositoryTest {
     @Test
     void should_return_empty_when_find_by_email_address_not_found() throws TechnicalException {
         // given
-        var exception = new StatusRuntimeException(
+        final var exception = new StatusRuntimeException(
                 Status.NOT_FOUND.withDescription("Employee not found"));
         given(stub.findByEmailAddress(any(FindRequest.class))).willThrow(exception);
 
         // when
-        var response = repository.findByEmailAddress("john@wayne.com");
+        final var response = repository.findByEmailAddress("john@wayne.com");
 
         // then
         assertThat(response).isEmpty();
@@ -74,7 +74,7 @@ class EmployeeRepositoryTest {
     @Test
     void should_throw_exception_when_find_by_email_address_fails() {
         // given
-        var exception = new StatusRuntimeException(
+        final var exception = new StatusRuntimeException(
                 Status.INTERNAL.withDescription("Internal server error"));
         given(stub.findByEmailAddress(any(FindRequest.class))).willThrow(exception);
 

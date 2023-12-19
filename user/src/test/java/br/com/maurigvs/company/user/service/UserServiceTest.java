@@ -1,5 +1,23 @@
 package br.com.maurigvs.company.user.service;
 
+import br.com.maurigvs.company.employee.EmployeeResponse;
+import br.com.maurigvs.company.user.exception.BusinessException;
+import br.com.maurigvs.company.user.exception.TechnicalException;
+import br.com.maurigvs.company.user.model.User;
+import br.com.maurigvs.company.user.model.UserResponse;
+import br.com.maurigvs.company.user.repository.EmployeeRepository;
+import br.com.maurigvs.company.user.repository.UserRepository;
+import org.junit.jupiter.api.DisplayNameGeneration;
+import org.junit.jupiter.api.DisplayNameGenerator;
+import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+
+import java.util.Optional;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.mockito.ArgumentMatchers.any;
@@ -9,25 +27,6 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
-
-import java.util.Optional;
-
-import br.com.maurigvs.company.employee.EmployeeResponse;
-import br.com.maurigvs.company.user.exception.BusinessException;
-import br.com.maurigvs.company.user.exception.TechnicalException;
-import br.com.maurigvs.company.user.model.User;
-import br.com.maurigvs.company.user.model.UserResponse;
-import br.com.maurigvs.company.user.repository.EmployeeRepository;
-import br.com.maurigvs.company.user.repository.UserRepository;
-
-import org.junit.jupiter.api.DisplayNameGeneration;
-import org.junit.jupiter.api.DisplayNameGenerator;
-import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Captor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 
 @SpringBootTest(classes = {UserService.class})
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
@@ -48,7 +47,7 @@ class UserServiceTest {
     @Test
     void should_create_user_successfully() throws BusinessException, TechnicalException {
         // given
-        var employeeResponse = EmployeeResponse.newBuilder().setId(2L).build();
+        final var employeeResponse = EmployeeResponse.newBuilder().setId(2L).build();
 
         given(userRepository.existsByLogin(anyString()))
                 .willReturn(false);
@@ -60,7 +59,7 @@ class UserServiceTest {
                 .willReturn(new User(1L, "john@wayne.com", 2L));
 
         // when
-        var result = service.create("john@wayne.com");
+        final var result = service.create("john@wayne.com");
 
         // then
         assertThat(result.getId()).isEqualTo(1L);
@@ -132,16 +131,16 @@ class UserServiceTest {
     @Test
     void should_return_user_when_get_by_login() throws TechnicalException, BusinessException {
         // given
-        var login = "john@wayne.com";
-        var user = Optional.of(new User(1L, "john@wayne.com", 2L));
-        var employee = Optional.of(EmployeeResponse.newBuilder().setFullName("John Wayne").build());
-        var expected = new UserResponse("John Wayne", "john@wayne.com");
+        final var login = "john@wayne.com";
+        final var user = Optional.of(new User(1L, "john@wayne.com", 2L));
+        final var employee = Optional.of(EmployeeResponse.newBuilder().setFullName("John Wayne").build());
+        final var expected = new UserResponse("John Wayne", "john@wayne.com");
 
         given(userRepository.findByLogin(anyString())).willReturn(user);
         given(employeeRepository.findByEmailAddress(anyString())).willReturn(employee);
 
         // when
-        var result = service.getByLogin(login);
+        final var result = service.getByLogin(login);
 
         // then
         assertThat(result).isEqualTo(expected);
@@ -153,7 +152,7 @@ class UserServiceTest {
     @Test
     void should_throw_business_exception_when_user_not_found_by_login() {
         // given
-        var login = "john@wayne.com";
+        final var login = "john@wayne.com";
         given(userRepository.findByLogin(anyString())).willReturn(Optional.empty());
 
         // when, then
@@ -169,8 +168,8 @@ class UserServiceTest {
     @Test
     void should_throw_business_exception_when_employee_find_fails() throws TechnicalException {
         // given
-        var login = "john@wayne.com";
-        var user = Optional.of(new User(1L, "john@wayne.com", 2L));
+        final var login = "john@wayne.com";
+        final var user = Optional.of(new User(1L, "john@wayne.com", 2L));
 
         given(userRepository.findByLogin(anyString())).willReturn(user);
         given(employeeRepository.findByEmailAddress(anyString())).willReturn(Optional.empty());
@@ -188,7 +187,7 @@ class UserServiceTest {
     @Test
     void should_throw_technical_exception_when_employee_find_fails() throws TechnicalException {
         // given
-        var login = "john@wayne.com";
+        final var login = "john@wayne.com";
 
         given(userRepository.findByLogin(anyString()))
                 .willReturn(Optional.of(new User(1L, "john@wayne.com", 2L)));

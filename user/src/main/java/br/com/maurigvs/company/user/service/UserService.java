@@ -1,8 +1,5 @@
 package br.com.maurigvs.company.user.service;
 
-import java.util.NoSuchElementException;
-import java.util.Optional;
-
 import br.com.maurigvs.company.employee.EmployeeResponse;
 import br.com.maurigvs.company.user.exception.BusinessException;
 import br.com.maurigvs.company.user.exception.TechnicalException;
@@ -10,10 +7,11 @@ import br.com.maurigvs.company.user.model.User;
 import br.com.maurigvs.company.user.model.UserResponse;
 import br.com.maurigvs.company.user.repository.EmployeeRepository;
 import br.com.maurigvs.company.user.repository.UserRepository;
-
 import lombok.RequiredArgsConstructor;
-
 import org.springframework.stereotype.Service;
+
+import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -26,7 +24,7 @@ public class UserService {
         if(existsByLogin(login))
             throw new BusinessException("The user is already registered");
 
-        var employee = findByEmailAddress(login);
+        final var employee = findByEmailAddress(login);
         if(employee.isEmpty())
             throw new BusinessException("The user must be a employee registered");
 
@@ -46,8 +44,8 @@ public class UserService {
     }
 
     public UserResponse getByLogin(String login) throws BusinessException, TechnicalException {
-        var user = findByLogin(login);
-        var employee = findEmployeeByLogin(login);
+        final var user = findByLogin(login);
+        final var employee = findEmployeeByLogin(login);
         return new UserResponse(employee.getFullName(), user.getLogin());
     }
 
@@ -60,7 +58,7 @@ public class UserService {
     }
 
     private EmployeeResponse findEmployeeByLogin(String login) throws BusinessException, TechnicalException {
-        var employee = employeeRepository.findByEmailAddress(login);
+        final var employee = employeeRepository.findByEmailAddress(login);
         if(employee.isEmpty())
             throw new BusinessException("User's information is missing");
         return employee.get();

@@ -9,7 +9,7 @@ public class Utils {
 
     public static String jsonStringOf(Object object) {
         try {
-            var om = new ObjectMapper();
+            final var om = new ObjectMapper();
             om.registerModule(new JavaTimeModule());
             return om.writeValueAsString(object);
         } catch (JsonProcessingException e) {
@@ -19,9 +19,9 @@ public class Utils {
 
     public static ErrorMessageDto errorMessageOf(String response){
         try {
-            var om = new ObjectMapper();
+            final var om = new ObjectMapper();
             om.registerModule(new JavaTimeModule());
-            var errorMessage = om.readValue(response, ErrorMessageDto.class);
+            final var errorMessage = om.readValue(response, ErrorMessageDto.class);
             System.out.println(errorMessage);
             return errorMessage;
         } catch (JsonProcessingException e) {

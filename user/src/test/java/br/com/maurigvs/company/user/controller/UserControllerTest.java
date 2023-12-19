@@ -44,7 +44,7 @@ class UserControllerTest {
     @Test
     void should_return_created_when_post_user() throws Exception {
         // given
-        var requestAsJson = jsonStringOf(new UserRequestDto("john@wayne.com"));
+        final var requestAsJson = jsonStringOf(new UserRequestDto("john@wayne.com"));
 
         // when
         mockMvc.perform(
@@ -61,12 +61,12 @@ class UserControllerTest {
     @Test
     void should_return_ok_when_get_user_by_login() throws Exception {
         // given
-        var user = new UserResponse("John Wayne", "john@wayne.com");
-        var responseAsJson = jsonStringOf(user);
+        final var user = new UserResponse("John Wayne", "john@wayne.com");
+        final var responseAsJson = jsonStringOf(user);
         given(userService.getByLogin(anyString())).willReturn(user);
 
         // when
-        var result = mockMvc.perform(
+        final var result = mockMvc.perform(
                 get("/user/john@wayne.com"))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON))
@@ -81,16 +81,16 @@ class UserControllerTest {
     @Test
     void should_return_bad_request_when_business_exception_is_thrown() throws Exception {
         // given
-        var messageExpected = "The user is already registered";
-        var requestAsJson = jsonStringOf(new UserRequestDto("john@wayne.com"));
-        var responseAsJson = jsonStringOf(new ErrorMessageDto(
+        final var messageExpected = "The user is already registered";
+        final var requestAsJson = jsonStringOf(new UserRequestDto("john@wayne.com"));
+        final var responseAsJson = jsonStringOf(new ErrorMessageDto(
                 HttpStatus.BAD_REQUEST.getReasonPhrase(), messageExpected));
 
         given(userService.create(anyString()))
                 .willThrow(new BusinessException(messageExpected));
 
         // when
-        var resultActions = mockMvc.perform(
+        final var resultActions = mockMvc.perform(
             post("/user")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(requestAsJson))
@@ -99,7 +99,7 @@ class UserControllerTest {
             .andExpect(content().json(responseAsJson));
 
         // then
-        var response = errorMessageOf(resultActions
+        final var response = errorMessageOf(resultActions
             .andReturn().getResponse().getContentAsString());
 
         assertThat(response.error()).isEqualTo(HttpStatus.BAD_REQUEST.getReasonPhrase());
@@ -112,16 +112,16 @@ class UserControllerTest {
     @Test
     void should_return_internal_server_error_when_technical_exception_is_thrown() throws Exception {
         // given
-        var messageExpected = "Connection refused: null";
-        var requestAsJson = jsonStringOf(new UserRequestDto("john@wayne.com"));
-        var responseAsJson = jsonStringOf(new ErrorMessageDto(
+        final var messageExpected = "Connection refused: null";
+        final var requestAsJson = jsonStringOf(new UserRequestDto("john@wayne.com"));
+        final var responseAsJson = jsonStringOf(new ErrorMessageDto(
                 HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase(), messageExpected));
 
         given(userService.create(anyString()))
                 .willThrow(new TechnicalException("Connection refused", null));
 
         // when
-        var resultActions = mockMvc.perform(
+        final var resultActions = mockMvc.perform(
                         post("/user")
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(requestAsJson))
@@ -130,7 +130,7 @@ class UserControllerTest {
                 .andExpect(content().json(responseAsJson));
 
         // then
-        var response = errorMessageOf(resultActions
+        final var response = errorMessageOf(resultActions
                 .andReturn().getResponse().getContentAsString());
 
         assertThat(response.error()).isEqualTo(HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase());
