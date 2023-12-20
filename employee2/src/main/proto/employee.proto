@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "br.com.maurigvs.company.employee";
+option java_outer_classname = "EmployeeProto";
+
+package employee;
+
+service EmployeeGrpc {
+  rpc FindByEmailAddress(FindRequest) returns (EmployeeReply);
+}
+
+message FindRequest {
+  string emailAddress = 1;
+}
+
+message EmployeeReply {
+  int64 id = 1;
+  string fullName = 2;
+  string emailAddress = 3;
+}

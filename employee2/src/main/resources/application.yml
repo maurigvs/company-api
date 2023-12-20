@@ -1,2 +1,26 @@
 greeting:
   message: "hello"
+
+quarkus:
+  http:
+    port: 8180
+    root-path: /company
+  grpc:
+    server:
+      port: 8185
+
+'%dev':
+  quarkus:
+    devservices:
+      enabled: true
+
+'%prod':
+  quarkus:
+    datasource:
+      db-kind: postgresql
+      jdbc:
+        max-size: 8
+        min-size: 2
+        url: jdbc:postgresql://localhost/quarkus_test
+      password: quarkus_test
+      username: quarkus_test
