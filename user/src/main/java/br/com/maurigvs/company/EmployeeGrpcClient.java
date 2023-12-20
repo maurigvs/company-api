@@ -1,4 +1,4 @@
-package br.com.maurigvs.company.user.config;
+package br.com.maurigvs.company;
 
 import br.com.maurigvs.company.employee.EmployeeGrpcGrpc;
 import io.grpc.ManagedChannel;

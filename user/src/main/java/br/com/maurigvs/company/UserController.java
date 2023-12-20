@@ -1,10 +1,9 @@
-package br.com.maurigvs.company.user.controller;
+package br.com.maurigvs.company;
 
-import br.com.maurigvs.company.user.exception.TechnicalException;
-import br.com.maurigvs.company.user.model.UserResponse;
-import br.com.maurigvs.company.user.service.UserService;
-import br.com.maurigvs.company.user.exception.BusinessException;
-import br.com.maurigvs.company.user.model.UserRequest;
+import br.com.maurigvs.company.exception.TechnicalException;
+import br.com.maurigvs.company.model.UserResponse;
+import br.com.maurigvs.company.exception.BusinessException;
+import br.com.maurigvs.company.model.UserRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;

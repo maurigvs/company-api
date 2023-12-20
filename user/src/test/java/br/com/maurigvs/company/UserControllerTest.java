@@ -1,24 +1,7 @@
-package br.com.maurigvs.company.user.controller;
+package br.com.maurigvs.company;
 
-import br.com.maurigvs.company.user.exception.BusinessException;
-import br.com.maurigvs.company.user.exception.ErrorResponse;
-import br.com.maurigvs.company.user.exception.TechnicalException;
-import br.com.maurigvs.company.user.model.UserRequest;
-import br.com.maurigvs.company.user.model.UserResponse;
-import br.com.maurigvs.company.user.service.UserService;
-import org.junit.jupiter.api.DisplayNameGeneration;
-import org.junit.jupiter.api.DisplayNameGenerator;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.test.web.servlet.MockMvc;
-
-import static br.com.maurigvs.company.user.utils.Utils.errorMessageOf;
-import static br.com.maurigvs.company.user.utils.Utils.jsonStringOf;
+import static br.com.maurigvs.company.Utils.errorMessageOf;
+import static br.com.maurigvs.company.Utils.jsonStringOf;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
@@ -29,6 +12,23 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import br.com.maurigvs.company.exception.BusinessException;
+import br.com.maurigvs.company.exception.ErrorResponse;
+import br.com.maurigvs.company.exception.TechnicalException;
+import br.com.maurigvs.company.model.UserRequest;
+import br.com.maurigvs.company.model.UserResponse;
+
+import org.junit.jupiter.api.DisplayNameGeneration;
+import org.junit.jupiter.api.DisplayNameGenerator;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.MockMvc;
 
 @WebMvcTest(UserController.class)
 @AutoConfigureMockMvc

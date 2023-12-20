@@ -1,16 +1,19 @@
-package br.com.maurigvs.company.user.repository;
+package br.com.maurigvs.company;
+
+import java.util.Optional;
 
 import br.com.maurigvs.company.employee.EmployeeGrpcGrpc;
 import br.com.maurigvs.company.employee.EmployeeReply;
 import br.com.maurigvs.company.employee.FindRequest;
-import br.com.maurigvs.company.user.exception.TechnicalException;
+import br.com.maurigvs.company.exception.TechnicalException;
+
 import io.grpc.Status;
 import io.grpc.StatusRuntimeException;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Repository;
 
-import java.util.Optional;
+import org.springframework.stereotype.Repository;
 
 @Repository
 @RequiredArgsConstructor

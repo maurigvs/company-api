@@ -1,22 +1,4 @@
-package br.com.maurigvs.company.user.service;
-
-import br.com.maurigvs.company.employee.EmployeeReply;
-import br.com.maurigvs.company.user.exception.BusinessException;
-import br.com.maurigvs.company.user.exception.TechnicalException;
-import br.com.maurigvs.company.user.model.User;
-import br.com.maurigvs.company.user.model.UserResponse;
-import br.com.maurigvs.company.user.repository.EmployeeRepository;
-import br.com.maurigvs.company.user.repository.UserRepository;
-import org.junit.jupiter.api.DisplayNameGeneration;
-import org.junit.jupiter.api.DisplayNameGenerator;
-import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Captor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-
-import java.util.Optional;
+package br.com.maurigvs.company;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
@@ -27,6 +9,23 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
+
+import java.util.Optional;
+
+import br.com.maurigvs.company.employee.EmployeeReply;
+import br.com.maurigvs.company.exception.BusinessException;
+import br.com.maurigvs.company.exception.TechnicalException;
+import br.com.maurigvs.company.model.User;
+import br.com.maurigvs.company.model.UserResponse;
+
+import org.junit.jupiter.api.DisplayNameGeneration;
+import org.junit.jupiter.api.DisplayNameGenerator;
+import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 
 @SpringBootTest(classes = {UserService.class})
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)

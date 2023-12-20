@@ -1,4 +1,4 @@
-package br.com.maurigvs.company.user.exception;
+package br.com.maurigvs.company.exception;
 
 public record ErrorResponse(String error, String message){
 

@@ -1,17 +1,17 @@
-package br.com.maurigvs.company.user.service;
-
-import br.com.maurigvs.company.employee.EmployeeReply;
-import br.com.maurigvs.company.user.exception.BusinessException;
-import br.com.maurigvs.company.user.exception.TechnicalException;
-import br.com.maurigvs.company.user.model.User;
-import br.com.maurigvs.company.user.model.UserResponse;
-import br.com.maurigvs.company.user.repository.EmployeeRepository;
-import br.com.maurigvs.company.user.repository.UserRepository;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
+package br.com.maurigvs.company;
 
 import java.util.NoSuchElementException;
 import java.util.Optional;
+
+import br.com.maurigvs.company.employee.EmployeeReply;
+import br.com.maurigvs.company.exception.BusinessException;
+import br.com.maurigvs.company.exception.TechnicalException;
+import br.com.maurigvs.company.model.User;
+import br.com.maurigvs.company.model.UserResponse;
+
+import lombok.RequiredArgsConstructor;
+
+import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
