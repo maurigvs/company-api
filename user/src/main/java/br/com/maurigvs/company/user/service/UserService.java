@@ -1,6 +1,6 @@
 package br.com.maurigvs.company.user.service;
 
-import br.com.maurigvs.company.employee.EmployeeResponse;
+import br.com.maurigvs.company.employee.EmployeeReply;
 import br.com.maurigvs.company.user.exception.BusinessException;
 import br.com.maurigvs.company.user.exception.TechnicalException;
 import br.com.maurigvs.company.user.model.User;
@@ -31,7 +31,7 @@ public class UserService {
         return save(new User(null, login, employee.get().getId()));
     }
 
-    private Optional<EmployeeResponse> findByEmailAddress(String login) throws TechnicalException {
+    private Optional<EmployeeReply> findByEmailAddress(String login) throws TechnicalException {
         return employeeRepository.findByEmailAddress(login);
     }
 
@@ -57,7 +57,7 @@ public class UserService {
         }
     }
 
-    private EmployeeResponse findEmployeeByLogin(String login) throws BusinessException, TechnicalException {
+    private EmployeeReply findEmployeeByLogin(String login) throws BusinessException, TechnicalException {
         final var employee = employeeRepository.findByEmailAddress(login);
         if(employee.isEmpty())
             throw new BusinessException("User's information is missing");

@@ -1,6 +1,6 @@
 package br.com.maurigvs.company.user.service;
 
-import br.com.maurigvs.company.employee.EmployeeResponse;
+import br.com.maurigvs.company.employee.EmployeeReply;
 import br.com.maurigvs.company.user.exception.BusinessException;
 import br.com.maurigvs.company.user.exception.TechnicalException;
 import br.com.maurigvs.company.user.model.User;
@@ -47,7 +47,7 @@ class UserServiceTest {
     @Test
     void should_create_user_successfully() throws BusinessException, TechnicalException {
         // given
-        final var employeeResponse = EmployeeResponse.newBuilder().setId(2L).build();
+        final var employeeResponse = EmployeeReply.newBuilder().setId(2L).build();
 
         given(userRepository.existsByLogin(anyString()))
                 .willReturn(false);
@@ -133,7 +133,7 @@ class UserServiceTest {
         // given
         final var login = "john@wayne.com";
         final var user = Optional.of(new User(1L, "john@wayne.com", 2L));
-        final var employee = Optional.of(EmployeeResponse.newBuilder().setFullName("John Wayne").build());
+        final var employee = Optional.of(EmployeeReply.newBuilder().setFullName("John Wayne").build());
         final var expected = new UserResponse("John Wayne", "john@wayne.com");
 
         given(userRepository.findByLogin(anyString())).willReturn(user);

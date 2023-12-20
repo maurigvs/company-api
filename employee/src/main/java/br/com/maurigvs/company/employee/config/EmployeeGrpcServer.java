@@ -13,7 +13,7 @@ import java.util.concurrent.TimeUnit;
 @Configuration
 @RequiredArgsConstructor
 @Slf4j
-public class EmployeeRpcServer {
+public class EmployeeGrpcServer {
 
     private final Server server;
 

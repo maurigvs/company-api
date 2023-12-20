@@ -1,25 +1,12 @@
 package br.com.maurigvs.company.employee.service;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
-
-import java.time.LocalDate;
-import java.util.Optional;
-import java.util.concurrent.CompletableFuture;
-
-import br.com.maurigvs.company.employee.EmployeeResponse;
+import br.com.maurigvs.company.employee.EmployeeReply;
 import br.com.maurigvs.company.employee.FindRequest;
 import br.com.maurigvs.company.employee.enums.Status;
 import br.com.maurigvs.company.employee.model.Employee;
 import br.com.maurigvs.company.employee.repository.EmployeeRepository;
-
 import io.grpc.StatusRuntimeException;
 import io.grpc.stub.StreamObserver;
-
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
@@ -28,12 +15,23 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.jdbc.datasource.lookup.DataSourceLookupFailureException;
 
-@SpringBootTest(classes = {EmployeeRpcService.class})
+import java.time.LocalDate;
+import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
+
+@SpringBootTest(classes = {EmployeeGrpcService.class})
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
-class EmployeeRpcServiceTest {
+class EmployeeGrpcServiceTest {
 
     @Autowired
-    EmployeeRpcService rpcService;
+    EmployeeGrpcService grpcService;
 
     @MockBean
     EmployeeRepository repository;
@@ -52,10 +50,10 @@ class EmployeeRpcServiceTest {
         final var future = new CompletableFuture<>();
         given(repository.findByEmailAddress(anyString())).willReturn(employeeOpt);
 
-        rpcService.findByEmailAddress(request, new StreamObserver<>() {
+        grpcService.findByEmailAddress(request, new StreamObserver<>() {
 
             @Override
-            public void onNext(EmployeeResponse response) {
+            public void onNext(EmployeeReply response) {
                 assertThat(response).isNotNull();
                 assertThat(response.getId()).isNotZero();
                 assertThat(response.getFullName()).isEqualTo("John Wayne");
@@ -85,10 +83,10 @@ class EmployeeRpcServiceTest {
         final var future = new CompletableFuture<>();
         given(repository.findByEmailAddress(anyString())).willReturn(Optional.empty());
 
-        rpcService.findByEmailAddress(request, new StreamObserver<>() {
+        grpcService.findByEmailAddress(request, new StreamObserver<>() {
 
             @Override
-            public void onNext(EmployeeResponse response) {}
+            public void onNext(EmployeeReply response) {}
 
             @Override
             public void onError(Throwable exception) {
@@ -117,10 +115,10 @@ class EmployeeRpcServiceTest {
         final var future = new CompletableFuture<>();
         given(repository.findByEmailAddress(anyString())).willThrow(exception);
 
-        rpcService.findByEmailAddress(request, new StreamObserver<>() {
+        grpcService.findByEmailAddress(request, new StreamObserver<>() {
 
             @Override
-            public void onNext(EmployeeResponse response) {}
+            public void onNext(EmployeeReply response) {}
 
             @Override
             public void onError(Throwable exception) {

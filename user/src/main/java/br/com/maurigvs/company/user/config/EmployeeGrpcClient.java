@@ -1,13 +1,13 @@
 package br.com.maurigvs.company.user.config;
 
-import br.com.maurigvs.company.employee.EmployeeGrpc;
+import br.com.maurigvs.company.employee.EmployeeGrpcGrpc;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class EmployeeRpcClient {
+public class EmployeeGrpcClient {
 
     @Bean
     public ManagedChannel managedChannel(){
@@ -18,12 +18,12 @@ public class EmployeeRpcClient {
     }
 
     @Bean
-    public EmployeeGrpc.EmployeeBlockingStub employeeBlockingStub(ManagedChannel channel){
-        return EmployeeGrpc.newBlockingStub(channel);
+    public EmployeeGrpcGrpc.EmployeeGrpcBlockingStub employeeBlockingStub(ManagedChannel channel){
+        return EmployeeGrpcGrpc.newBlockingStub(channel);
     }
 
     @Bean
-    public EmployeeGrpc.EmployeeStub employeeStub(ManagedChannel channel){
-        return EmployeeGrpc.newStub(channel);
+    public EmployeeGrpcGrpc.EmployeeGrpcStub employeeStub(ManagedChannel channel){
+        return EmployeeGrpcGrpc.newStub(channel);
     }
 }

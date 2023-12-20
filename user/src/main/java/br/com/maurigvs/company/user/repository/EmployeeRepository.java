@@ -1,28 +1,25 @@
 package br.com.maurigvs.company.user.repository;
 
-import java.util.Optional;
-
-import br.com.maurigvs.company.employee.EmployeeGrpc;
-import br.com.maurigvs.company.employee.EmployeeResponse;
+import br.com.maurigvs.company.employee.EmployeeGrpcGrpc;
+import br.com.maurigvs.company.employee.EmployeeReply;
 import br.com.maurigvs.company.employee.FindRequest;
 import br.com.maurigvs.company.user.exception.TechnicalException;
-
 import io.grpc.Status;
 import io.grpc.StatusRuntimeException;
-
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-
 import org.springframework.stereotype.Repository;
+
+import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
 @Slf4j
 public class EmployeeRepository {
 
-    private final EmployeeGrpc.EmployeeBlockingStub repository;
+    private final EmployeeGrpcGrpc.EmployeeGrpcBlockingStub repository;
 
-    public Optional<EmployeeResponse> findByEmailAddress(String emailAddress) throws TechnicalException {
+    public Optional<EmployeeReply> findByEmailAddress(String emailAddress) throws TechnicalException {
         try {
             final var request = FindRequest.newBuilder()
                     .setEmailAddress(emailAddress)

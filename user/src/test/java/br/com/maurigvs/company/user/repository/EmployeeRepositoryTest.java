@@ -1,5 +1,18 @@
 package br.com.maurigvs.company.user.repository;
 
+import br.com.maurigvs.company.employee.EmployeeGrpcGrpc;
+import br.com.maurigvs.company.employee.EmployeeReply;
+import br.com.maurigvs.company.employee.FindRequest;
+import br.com.maurigvs.company.user.exception.TechnicalException;
+import io.grpc.Status;
+import io.grpc.StatusRuntimeException;
+import org.junit.jupiter.api.DisplayNameGeneration;
+import org.junit.jupiter.api.DisplayNameGenerator;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.mockito.ArgumentMatchers.any;
@@ -7,21 +20,6 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
-
-import br.com.maurigvs.company.employee.EmployeeGrpc;
-import br.com.maurigvs.company.employee.EmployeeResponse;
-import br.com.maurigvs.company.employee.FindRequest;
-import br.com.maurigvs.company.user.exception.TechnicalException;
-
-import io.grpc.Status;
-import io.grpc.StatusRuntimeException;
-
-import org.junit.jupiter.api.DisplayNameGeneration;
-import org.junit.jupiter.api.DisplayNameGenerator;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 
 @SpringBootTest(classes = {EmployeeRepository.class})
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
@@ -31,12 +29,12 @@ class EmployeeRepositoryTest {
     EmployeeRepository repository;
 
     @MockBean
-    EmployeeGrpc.EmployeeBlockingStub stub;
+    EmployeeGrpcGrpc.EmployeeGrpcBlockingStub stub;
 
     @Test
     void should_return_employee_data_when_find_by_email_address_success() throws TechnicalException {
         // given
-        final var grpcResponse = EmployeeResponse.newBuilder()
+        final var grpcResponse = EmployeeReply.newBuilder()
                 .setId(1L)
                 .setFullName("John Wayne")
                 .setEmailAddress("john@wayne.com")
