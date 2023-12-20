@@ -1,7 +1,5 @@
-package br.com.maurigvs.company.employee.config;
+package br.com.maurigvs.company;
 
-import br.com.maurigvs.company.employee.repository.EmployeeRepository;
-import br.com.maurigvs.company.employee.service.EmployeeGrpcService;
 import io.grpc.Server;
 import io.grpc.ServerBuilder;
 import org.springframework.context.annotation.Bean;

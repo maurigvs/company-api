@@ -1,14 +1,16 @@
-package br.com.maurigvs.company.employee.config;
-
-import io.grpc.Server;
-import jakarta.annotation.PostConstruct;
-import jakarta.annotation.PreDestroy;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.annotation.Configuration;
+package br.com.maurigvs.company;
 
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
+import jakarta.annotation.PostConstruct;
+import jakarta.annotation.PreDestroy;
+
+import io.grpc.Server;
+
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+
+import org.springframework.context.annotation.Configuration;
 
 @Configuration
 @RequiredArgsConstructor

@@ -1,4 +1,4 @@
-package br.com.maurigvs.company.employee.enums;
+package br.com.maurigvs.company.enums;
 
 import jakarta.persistence.AttributeConverter;
 import jakarta.persistence.Converter;

@@ -1,4 +1,4 @@
-package br.com.maurigvs.company.employee.exception.grpc;
+package br.com.maurigvs.company.exception.grpc;
 
 import io.grpc.Status;
 import io.grpc.StatusRuntimeException;

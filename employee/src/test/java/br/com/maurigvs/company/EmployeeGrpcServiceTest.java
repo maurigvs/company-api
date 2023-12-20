@@ -1,10 +1,11 @@
-package br.com.maurigvs.company.employee.service;
+package br.com.maurigvs.company;
 
+import br.com.maurigvs.company.EmployeeGrpcService;
 import br.com.maurigvs.company.employee.EmployeeReply;
 import br.com.maurigvs.company.employee.FindRequest;
-import br.com.maurigvs.company.employee.enums.Status;
-import br.com.maurigvs.company.employee.model.Employee;
-import br.com.maurigvs.company.employee.repository.EmployeeRepository;
+import br.com.maurigvs.company.enums.Status;
+import br.com.maurigvs.company.model.Employee;
+import br.com.maurigvs.company.EmployeeRepository;
 import io.grpc.StatusRuntimeException;
 import io.grpc.stub.StreamObserver;
 import org.junit.jupiter.api.DisplayNameGeneration;

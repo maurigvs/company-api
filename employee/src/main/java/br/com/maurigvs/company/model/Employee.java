@@ -1,18 +1,19 @@
-package br.com.maurigvs.company.employee.model;
+package br.com.maurigvs.company.model;
 
-import br.com.maurigvs.company.employee.enums.Status;
+import java.time.LocalDate;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+
+import br.com.maurigvs.company.enums.Status;
+
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import java.time.LocalDate;
 
 @Entity
 @Table(name = "company_employee")

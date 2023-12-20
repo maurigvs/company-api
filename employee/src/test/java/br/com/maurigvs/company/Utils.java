@@ -1,6 +1,6 @@
-package br.com.maurigvs.company.employee.utils;
+package br.com.maurigvs.company;
 
-import br.com.maurigvs.company.employee.exception.ErrorResponse;
+import br.com.maurigvs.company.exception.ErrorResponse;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;

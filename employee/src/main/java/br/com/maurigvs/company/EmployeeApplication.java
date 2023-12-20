@@ -1,4 +1,4 @@
-package br.com.maurigvs.company.employee;
+package br.com.maurigvs.company;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

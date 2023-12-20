@@ -1,8 +1,7 @@
-package br.com.maurigvs.company.employee.controller;
+package br.com.maurigvs.company;
 
-import br.com.maurigvs.company.employee.model.EmployeeRequest;
-import br.com.maurigvs.company.employee.service.EmployeeService;
-import br.com.maurigvs.company.employee.exception.BusinessException;
+import br.com.maurigvs.company.model.EmployeeRequest;
+import br.com.maurigvs.company.exception.BusinessException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PostMapping;

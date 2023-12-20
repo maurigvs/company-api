@@ -1,4 +1,4 @@
-package br.com.maurigvs.company.employee.enums;
+package br.com.maurigvs.company.enums;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

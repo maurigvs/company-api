@@ -1,9 +1,10 @@
-package br.com.maurigvs.company.employee.service;
+package br.com.maurigvs.company;
 
-import br.com.maurigvs.company.employee.enums.Status;
-import br.com.maurigvs.company.employee.exception.BusinessException;
-import br.com.maurigvs.company.employee.model.Employee;
-import br.com.maurigvs.company.employee.repository.EmployeeRepository;
+import br.com.maurigvs.company.EmployeeService;
+import br.com.maurigvs.company.enums.Status;
+import br.com.maurigvs.company.exception.BusinessException;
+import br.com.maurigvs.company.model.Employee;
+import br.com.maurigvs.company.EmployeeRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

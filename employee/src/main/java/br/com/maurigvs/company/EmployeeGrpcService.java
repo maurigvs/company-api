@@ -1,18 +1,20 @@
-package br.com.maurigvs.company.employee.service;
+package br.com.maurigvs.company;
+
+import java.util.NoSuchElementException;
 
 import br.com.maurigvs.company.employee.EmployeeGrpcGrpc;
 import br.com.maurigvs.company.employee.EmployeeReply;
 import br.com.maurigvs.company.employee.FindRequest;
-import br.com.maurigvs.company.employee.exception.grpc.StatusNotFoundException;
-import br.com.maurigvs.company.employee.exception.grpc.StatusInternalException;
-import br.com.maurigvs.company.employee.model.Employee;
-import br.com.maurigvs.company.employee.repository.EmployeeRepository;
+import br.com.maurigvs.company.exception.grpc.StatusInternalException;
+import br.com.maurigvs.company.exception.grpc.StatusNotFoundException;
+import br.com.maurigvs.company.model.Employee;
+
 import io.grpc.stub.StreamObserver;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
 
-import java.util.NoSuchElementException;
+import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor

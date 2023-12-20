@@ -1,13 +1,12 @@
-package br.com.maurigvs.company.employee.service;
+package br.com.maurigvs.company;
 
 import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
-import br.com.maurigvs.company.employee.enums.Status;
-import br.com.maurigvs.company.employee.exception.BusinessException;
-import br.com.maurigvs.company.employee.model.Employee;
-import br.com.maurigvs.company.employee.repository.EmployeeRepository;
+import br.com.maurigvs.company.enums.Status;
+import br.com.maurigvs.company.exception.BusinessException;
+import br.com.maurigvs.company.model.Employee;
 
 import lombok.RequiredArgsConstructor;
 
